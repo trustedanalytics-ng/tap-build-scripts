@@ -1,0 +1,55 @@
+###########################################################################
+# Copyright (c) 2016 Intel Corporation                                    #
+#                                                                         #
+# Licensed under the Apache License, Version 2.0 (the "License");         #
+# you may not use this file except in compliance with the License.        #
+# You may obtain a copy of the License at                                 #
+#                                                                         #
+#    http://www.apache.org/licenses/LICENSE-2.0                           #
+#                                                                         #
+# Unless required by applicable law or agreed to in writing, software     #
+# distributed under the License is distributed on an "AS IS" BASIS,       #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+# See the License for the specific language governing permissions and     #
+# limitations under the License.                                          #
+###########################################################################
+
+---
+
+- name: add epel repository
+  yum_repository:
+    name: epel
+    description: epel repository
+    ip_resolve: 4
+    baseurl: https://dl.fedoraproject.org/pub/epel/7/x86_64/
+    gpgcheck: yes
+    gpgkey: https://getfedora.org/static/352C64E5.txt
+    retries: 10
+    state: present
+
+- name: install prerequisite packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - make
+    - git
+    - curl
+    - wget
+    - binutils
+    - gcc
+    - gcc-c++
+    - htop
+    - ncdu
+    - unzip
+    - zip
+    - jq
+    - createrepo
+    - yum-utils
+    - fontconfig
+    - sshpass
+    - bzip2
+    - rpm-build
+    - libffi
+

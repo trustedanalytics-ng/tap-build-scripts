@@ -1,0 +1,53 @@
+###########################################################################
+# Copyright (c) 2016 Intel Corporation                                    #
+#                                                                         #
+# Licensed under the Apache License, Version 2.0 (the "License");         #
+# you may not use this file except in compliance with the License.        #
+# You may obtain a copy of the License at                                 #
+#                                                                         #
+#    http://www.apache.org/licenses/LICENSE-2.0                           #
+#                                                                         #
+# Unless required by applicable law or agreed to in writing, software     #
+# distributed under the License is distributed on an "AS IS" BASIS,       #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+# See the License for the specific language governing permissions and     #
+# limitations under the License.                                          #
+###########################################################################
+
+---
+
+- name: install prerequisite packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - python
+    - python-six
+    - python-devel
+    - python-crypto
+    - python-pip
+    - python-setuptools
+    - python-virtualenv
+    - python34
+    - python34-six
+    - python34-devel
+    - python34-crypto
+    - python34-PyYAML
+    - python34-setuptools
+
+- name: install pip packages
+  pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    executable: pip2.7
+  with_items:
+    - { name: "locustio", version: "0.7.5" }
+    - { name: "pyzmq", version: "16.0.0" }
+    - { name: "requests", version: "2.11.1" }
+    - { name: "pysocks", version: "1.5.7" }
+    - { name: "sh", version: "1.11" }
+    - { name: "boto", version: "2.43.0" }
+    - { name: "awscli", version: "1.11.7" }
+    - { name: "tox", version: "2.4.1" }
+

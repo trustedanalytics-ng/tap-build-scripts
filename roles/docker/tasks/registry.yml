@@ -16,39 +16,14 @@
 
 ---
 
-- name: install prerequisite packages
-  yum:
-    name: "{{ item }}"
+- name: Create volume's local directory for docker registry
+  file: path={{ registry_volume_host_path }} state=directory
+
+- name: Create local docker registry
+  docker_container:
+    name: package-registry
     state: present
-    update_cache: yes
-  with_items:
-    - python
-    - python-six
-    - python-devel
-    - python-crypto
-    - python-pip
-    - python-setuptools
-    - python-virtualenv
-    - python34
-    - python34-six
-    - python34-devel
-    - python34-crypto
-    - python34-PyYAML
-    - python34-setuptools
-
-- name: install pip packages
-  pip:
-    name: "{{ item.name }}"
-    version: "{{ item.version }}"
-    executable: pip2.7
-  with_items:
-    - { name: "locustio", version: "0.7.5" }
-    - { name: "pyzmq", version: "16.0.0" }
-    - { name: "requests", version: "2.11.1" }
-    - { name: "pysocks", version: "1.5.7" }
-    - { name: "sh", version: "1.11" }
-    - { name: "boto", version: "2.43.0" }
-    - { name: "awscli", version: "1.11.7" }
-    - { name: "tox", version: "2.4.1" }
-    - { name: "docker-py", version: "1.9.0" }
-
+    image: registry:2
+    published_ports: "{{ registry_distribution_port }}:5000"
+    volumes: "{{ registry_volume_host_path }}:{{ registry_volume_container_path }}"
+    

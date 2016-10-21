@@ -16,7 +16,28 @@
 
 ---
 
-- include: install.yml
-- include: docker_proxy.yml
-  when: proxy_env is defined
-- include: registry.yml
+# Tasks are based on the following procedure: https://docs.docker.com/engine/admin/systemd/#http-proxy
+
+- name: Create config directory for docker service
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Add proxy variables to http-proxy.conf file
+  ini_file: 
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    section: Service
+    option: Environment
+    value: '"HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}"'
+  register: docker_proxy_conf
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: docker_proxy_conf.changed
+
+- name: Restart docker
+  service:
+    name: docker
+    state: restarted
+  when: docker_proxy_conf.changed
+

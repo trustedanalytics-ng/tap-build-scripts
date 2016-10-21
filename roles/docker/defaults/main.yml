@@ -18,3 +18,7 @@
 yum_repo_baseurl: https://yum.dockerproject.org/repo/main/centos/7/
 yum_repo_gpgkey: https://yum.dockerproject.org/gpg
 
+registry_volume_host_path: "/tmp/data"
+registry_volume_container_path: "/var/lib/registry"
+registry_distribution_port: 5001
+

@@ -42,4 +42,6 @@
   become: yes
   become_user: clamupdate
   command: freshclam
+  tags:
+    - skip_on_vagrant
 

@@ -17,8 +17,14 @@
 ---
 
 - include: ipv6_fix.yml
+  tags:
+    - skip_on_vagrant
 - include: firewalld.yml
+  tags:
+    - skip_on_vagrant
 - include: selinux.yml
+  tags:
+    - skip_on_vagrant
 - include: yum_repositories.yml
 - include: environment.yml
 

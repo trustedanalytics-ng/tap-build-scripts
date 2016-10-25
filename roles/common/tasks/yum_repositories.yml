@@ -52,4 +52,4 @@
     - bzip2
     - rpm-build
     - libffi
-
+    - libffi-devel

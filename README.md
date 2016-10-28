@@ -1,5 +1,6 @@
 # grand-platform-factory
-Tool for preparing TAP deploy package
+Tool for preparing TAP deploy package.
+Required Ansible version: `2.2`
 
 ## Handling proxy
 In order to run grand-platform-factory behind proxy, execute following command:

@@ -18,3 +18,5 @@
 TARGET_REGULAR_USER: "{{ lookup('env', 'USER') }}"
 REGULAR_USER_HOME: "{{ lookup('env', 'HOME') }}"
 
+
+# registry_distribution_port: 5001

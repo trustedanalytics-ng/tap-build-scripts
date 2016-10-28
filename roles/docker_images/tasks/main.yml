@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and     #
 # limitations under the License.                                          #
 ###########################################################################
-
 ---
 
-- name: Create volume's local directory for docker registry
-  file: path={{ registry_volume_host_path }} state=directory
-
-- name: Create local docker registry
-  docker_container:
-    name: package-registry
-    state: started
-    image: registry:2
-    published_ports: "{{ registry_distribution_port }}:5000"
-    volumes: "{{ registry_volume_host_path }}:{{ registry_volume_container_path }}"
-    
+- include: public_images.yml
+  

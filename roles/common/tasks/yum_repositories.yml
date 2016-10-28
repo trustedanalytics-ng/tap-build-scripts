@@ -53,3 +53,4 @@
     - rpm-build
     - libffi
     - libffi-devel
+    - openssl-devel

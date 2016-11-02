@@ -19,7 +19,7 @@
 export ANSIBLE_SSH_CONTROL_PATH='%(directory)s/%%h-%%r'
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-playbook site.yml -i inventory/all.yml $@
+ansible-playbook tap-packager.yml -i inventory/all.yml $@
 
 RET=$?
 echo "Deployment exited with return code: $RET"

@@ -1,0 +1,7 @@
+parcel_repos:
+  - { host: "http://archive.cloudera.com/cdh5/parcels/5.7.1", name: "CDH-5.7.1-1.cdh5.7.1.p0.11-el7.parcel", sum: "63a9b171a5fb5b86aea05ec4dd2242fe71c52c62" }
+  - { host: "http://archive.cloudera.com/kafka/parcels/latest", name: "KAFKA-2.0.2-1.2.0.2.p0.5-el7.parcel", sum: "bd29962ad203a62530bac6c350bd956073018905" }
+  - { host: "http://hadoopgroupsmapping.s3-website-us-east-1.amazonaws.com", name: "HADOOPGROUPSMAPPING-1.3-el7.parcel", sum: "2a2930fa518f27631e9bff89da867ae24631e601" }
+  - { host: "http://repo.continuum.io/pkgs/misc/parcels", name: "Anaconda-4.0.0-el7.parcel", sum: "c82ff8626737bc59f247840d419185e0cb05ec91" }
+  - { host: "http://hue-sso.s3-website-us-east-1.amazonaws.com", name: "HUE_TRUSTEDANALYTICS-3.9.0-el7.parcel", sum: "2847b4ea3f7ed4abfbca428caa4b14bc7b1eea68" }
+

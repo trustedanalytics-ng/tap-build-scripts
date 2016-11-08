@@ -1,0 +1,37 @@
+---
+yum_repos:
+  cloudera-manager:
+    name: Cloudera Manager
+    baseurl: http://archive.cloudera.com/cm5/redhat/7/x86_64/cm/5.7.1/
+    gpgkey: http://archive.cloudera.com/cm5/redhat/7/x86_64/cm/RPM-GPG-KEY-cloudera
+    gpgcheck: 1
+  mysql56-community:
+    name: MySQL 5.6 Community Server
+    baseurl: http://repo.mysql.com/yum/mysql-5.6-community/el/7/$basearch/
+    enabled: 1
+    gpgcheck: 0
+  nginx:
+    name: nginx
+    description: nginx-official
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck: no
+  docker:
+    name: docker
+    description: docker project repository
+    baseurl: https://yum.dockerproject.org/repo/main/centos/$releasever/
+    gpgkey: https://yum.dockerproject.org/gpg
+    ip_resolve: 4
+    repo_gpgcheck: yes
+    retries: 10
+    state: present
+  ceph:
+    name: ceph
+    description: ceph repository
+    baseurl: http://download.ceph.com/rpm-jewel/el7/x86_64/
+    gpgkey: https://download.ceph.com/keys/release.asc
+    gpgcheck: 1
+  kubernetes:
+    name: kubernetes
+    description: kubernetes repo
+    baseurl: https://s3.amazonaws.com/trustedanalytics/v0.8.0/rpm/
+    gpgcheck: 0

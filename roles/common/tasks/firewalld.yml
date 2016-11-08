@@ -22,5 +22,5 @@
     enabled: no
     state: stopped
   register: command_result
-  failed_when: "{{ 'failed' in command_result and 'systemd could not find the requested service' not in command_result.msg }}"
+  failed_when: "{{ 'failed' in command_result and 'Could not find the requested service' not in command_result.msg }}"
 

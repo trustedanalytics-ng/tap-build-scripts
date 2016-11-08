@@ -16,29 +16,22 @@
 
 ---
 
-# Tasks are based on the following procedure: https://docs.docker.com/engine/admin/systemd/#http-proxy
-
-- name: Create config directory for docker service
-  file:
-    path: /etc/systemd/system/docker.service.d
-    state: directory
-
-- name: Add proxy variables to http-proxy.conf file
-  ini_file: 
-    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
-    section: Service
-    option: Environment
-    value: '"HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}"'
-    create: yes
-  register: docker_proxy_conf
-
-- name: Reload systemd
-  command: systemctl daemon-reload
-  when: docker_proxy_conf.changed
-
-- name: Restart docker
-  service:
-    name: docker
-    state: restarted
-  when: docker_proxy_conf.changed
+- name: Create offline repository package
+  hosts: all
+  gather_facts: no
+  vars_files:
+    - defaults/yum_repositories.yml
+    - defaults/yum_packages.yml
+    - defaults/files_packages.yml
+    - defaults/parcels_packages.yml
+    - defaults/pip_packages.yml
+    - defaults/offline_package.yml
+  become: yes
+  roles:
+    - offline_commons
+    - offline_parcels
+    - offline_pip
+    - offline_yum
+    - offline_files
+    - offline_archive 
 

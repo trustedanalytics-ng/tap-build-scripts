@@ -19,7 +19,10 @@
 export ANSIBLE_SSH_CONTROL_PATH='%(directory)s/%%h-%%r'
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-playbook tap-packager.yml -i inventory/all.yml $@
+CDIR=$(dirname $0)
+
+bash $CDIR/bin/acceptlicense.sh $@
+exec ansible-playbook tap-packager.yml -i inventory/all.yml $@
 
 RET=$?
 echo "Deployment exited with return code: $RET"

@@ -16,17 +16,13 @@
 
 ---
 
-- hosts: all
+- include: dev-dependencies.yml
+
+- name: Download and build docker images
+  hosts: all
   become: yes
   roles:
-    - common
-    - python
-    - go
-    - docker
-    - java
-    - nodejs
-    - ruby
-    - rpmbuild
-    - clamav
     - docker_images
+
+- include: offline-repository.yml
 

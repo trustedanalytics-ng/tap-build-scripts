@@ -1,0 +1,55 @@
+# Copyright (c) 2016 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+
+- name: Prepare yum definitions
+  set_fact:
+    pdir: "{{ root_directory }}/out/yum"
+
+- set_fact:
+    ydir: "{{ pdir }}/repository"
+
+- name: Create repo directory
+  file:
+    path: "{{ pdir }}"
+    state: directory
+    mode: 0755
+
+- name: Create package directory
+  file:
+    path: "{{ ydir }}"
+    state: directory
+    mode: 0755
+
+- name: Download all yum dependencies
+  command: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ item }}"
+  with_list: "{{ yum_dependencies }}"
+
+- name: Download all remote dependencies
+  get_url:
+    dest: "{{ ydir }}/{{ item.name }}"
+    headers: "{{ item.header }}"
+    url: "{{ item.url }}"
+    force: true
+  with_list: "{{ yum_remote_dependencies }}"
+
+- name: Also download all dependencies for remote dependencies
+  command: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ ydir }}/{{ item.name }}"
+  with_list: "{{ yum_remote_dependencies }}"
+
+- name: Create yum repo
+  command: createrepo "{{ pdir }}"
+

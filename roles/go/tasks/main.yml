@@ -20,8 +20,9 @@
   unarchive:
     src: "{{ golang_url }}"
     dest: /opt/
-    copy: no
+    remote_src: yes
     owner: "{{ TARGET_REGULAR_USER }}"
+    creates: /opt/go
 
 - name: Create go workspace
   file:
@@ -39,4 +40,3 @@
     - { line: 'export PATH=$PATH:$GOROOT/bin' }
     - { line: 'export GOPATH={{ REGULAR_USER_HOME }}/go' }
     - { line: 'export PATH=$PATH:$GOPATH/bin' }
-

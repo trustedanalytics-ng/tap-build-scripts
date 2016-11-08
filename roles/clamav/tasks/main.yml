@@ -24,7 +24,7 @@
 ---
 
 - name: Install EPEL repository and ClamAV package
-  yum: 
+  yum:
     name: "{{ item }}"
     state: installed
   with_items:
@@ -33,7 +33,7 @@
     - clamav-update
 
 - name: Configuring /etc/freshclam/conf (remove line 8)
-  lineinfile: 
+  lineinfile:
     dest: /etc/freshclam.conf
     state: absent
     regexp: "^Example"
@@ -42,6 +42,6 @@
   become: yes
   become_user: clamupdate
   command: freshclam
+  ignore_errors: yes
   tags:
     - skip_on_vagrant
-

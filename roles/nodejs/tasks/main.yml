@@ -20,6 +20,6 @@
   unarchive:
     src: "{{ nodejs_url }}"
     dest: /usr/local
-    copy: no
-    extra_opts: --strip-components=1 --show-stored-names
-  
+    remote_src: yes
+    extra_opts: --strip-components=1
+    creates: /usr/local/bin/node

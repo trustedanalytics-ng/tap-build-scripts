@@ -16,17 +16,6 @@
 
 ---
 
-- name: disable selinux static configuration
-  lineinfile:
-    dest: /etc/sysconfig/selinux
-    regexp: '^SELINUX=.*'
-    line: 'SELINUX=disabled'
-
-- name: check selinux running status
-  command: getenforce
-  register: selinux_running_status
-
-- name: disable selinux running configuration
-  command: setenforce 0
-  when: selinux_running_status.stdout != 'Disabled' and selinux_running_status.stdout != 'Permissive'
-
+- name: Disable SELinux on host
+  selinux:
+    state: disabled

@@ -16,55 +16,46 @@
 
 ---
 
-- name: stop existing docker engine
-  service:
-    name: docker
-    state: stopped
-  register: command_result
-  failed_when: "{{ 'failed' in command_result and 'systemd could not find the requested service' not in command_result.msg }}"
-
-- name: add docker repository
-  yum_repository:
-    name: docker
-    description: Docker Repository
-    ip_resolve: 4
-    baseurl: "{{ yum_repo_baseurl }}"
-    gpgcheck: yes
-    gpgkey: "{{ yum_repo_gpgkey }}"
-    retries: 10
-    state: present
-  when: "{{ 'state' not in command_result }}"
-
-- name: install docker packages
-  yum:
-    name: docker-engine
-    state: present
-    update_cache: yes
-  when: "{{ 'state' not in command_result }}"
-
-- name: stop newly installed docker
-  service:
-    name: docker
-    state: stopped
-  when: "{{ 'state' not in command_result }}"
-
-- name: create docker user
+- name: Create docker group
   group:
     name: docker
     state: present
 
-- name: add current user to docker group
+- name: Add current user to docker group
   user:
     name: "{{ TARGET_REGULAR_USER }}"
     state: present
     groups: docker
     append: yes
-    
-- name: start docker engine
-  service:
-    name: docker
-    state: started
-  
-- name: autostart docker engine
-  command: chkconfig docker on
 
+- block:
+    - name: Check if Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+  # Install Docker if fail to start it
+  rescue:
+    - name: Add docker repository
+      yum_repository:
+        name: docker
+        description: Docker Repository
+        ip_resolve: 4
+        baseurl: "{{ yum_repo_baseurl }}"
+        gpgcheck: yes
+        gpgkey: "{{ yum_repo_gpgkey }}"
+        retries: 10
+        state: present
+
+    - name: Install docker packages
+      yum:
+        name: docker-engine
+        state: present
+        update_cache: yes
+
+    - name: Start docker engine and enable on startup
+      service:
+        name: docker
+        state: started
+        enabled: yes

@@ -16,29 +16,13 @@
 
 ---
 
-# Tasks are based on the following procedure: https://docs.docker.com/engine/admin/systemd/#http-proxy
+- include: dev-dependencies.yml
 
-- name: Create config directory for docker service
-  file:
-    path: /etc/systemd/system/docker.service.d
-    state: directory
+- name: Download and build docker images
+  hosts: all
+  become: yes
+  roles:
+    - docker_images
 
-- name: Add proxy variables to http-proxy.conf file
-  ini_file: 
-    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
-    section: Service
-    option: Environment
-    value: '"HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}"'
-    create: yes
-  register: docker_proxy_conf
-
-- name: Reload systemd
-  command: systemctl daemon-reload
-  when: docker_proxy_conf.changed
-
-- name: Restart docker
-  service:
-    name: docker
-    state: restarted
-  when: docker_proxy_conf.changed
+- include: offline-repository.yml
 

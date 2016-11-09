@@ -1,0 +1,7 @@
+pip_dependencies:
+  - cm_api==13.0.0
+  - argparse==1.4.0
+  - kazoo==2.2.1
+  - pyyaml==3.12
+  - requests==2.11.1
+

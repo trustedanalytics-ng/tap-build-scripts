@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
     end
 
     config.vm.provision "ansible", run: "always" do |ansible|
-      ansible.playbook = "site.yml"
+      ansible.playbook = "tap-packager.yml"
       ansible.skip_tags = "skip_on_vagrant"
       ansible.extra_vars = {
         TARGET_REGULAR_USER: "vagrant",

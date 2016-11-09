@@ -28,5 +28,4 @@
     - ruby
     - rpmbuild
     - clamav
-    - docker_images
 

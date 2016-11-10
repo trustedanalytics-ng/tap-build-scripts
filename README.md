@@ -5,7 +5,7 @@ Required Ansible version: `2.2`
 ## Handling proxy
 In order to run grand-platform-factory behind proxy, execute following command:
 ```
-./RUN.sh --extra-vars='{"proxy_env": {"http_proxy":"<HTTP_PROXY>", "https_proxy":"<HTTPS_PROXY>"}}'
+./RUN.sh --extra-vars='{proxy_env: {http_proxy: "<HTTP_PROXY>", https_proxy: "<HTTPS_PROXY>", no_proxy: "<NO_PROXY>"}}'
 ```
 ## Using Vagrant container
 

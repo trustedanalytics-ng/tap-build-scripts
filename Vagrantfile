@@ -42,7 +42,8 @@ Vagrant.configure(2) do |config|
       if config.proxy.http and config.proxy.https
         ansible.extra_vars['proxy_env'] = {
            http_proxy: config.proxy.http,
-           https_proxy: config.proxy.https
+           https_proxy: config.proxy.https,
+           no_proxy: config.proxy.no_proxy
          } 
       end
     end

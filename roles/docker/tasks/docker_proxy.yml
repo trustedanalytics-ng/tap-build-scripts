@@ -28,7 +28,7 @@
     dest: /etc/systemd/system/docker.service.d/http-proxy.conf
     section: Service
     option: Environment
-    value: '"HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}"'
+    value: '"HTTP_PROXY={{ proxy_env.http_proxy }}" "HTTPS_PROXY={{ proxy_env.https_proxy }}" "NO_PROXY={{ proxy_env.no_proxy }}"'
     create: yes
   register: docker_proxy_conf
 

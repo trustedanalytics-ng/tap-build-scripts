@@ -21,7 +21,21 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 CDIR=$(dirname $0)
 
-bash $CDIR/bin/acceptlicense.sh $@
+while getopts a opt ; do
+  case $opt in
+    a) ACCEPTED_LICENSE=1 ;;
+  esac
+done
+
+if [ $ACCEPTED_LICENSE = 1 ]
+then
+  bash $CDIR/bin/acceptlicense.sh -a
+else
+  echo "You have to run script with -a option as first argument to accept necessary licenses."
+  exit 1
+fi
+
+shift
 exec ansible-playbook tap-packager.yml -i inventory/all.yml $@
 
 RET=$?

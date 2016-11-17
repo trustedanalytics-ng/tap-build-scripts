@@ -20,6 +20,8 @@
 
 - include: offline-repository.yml
 
+- include: tap-base-images/push.yml
+
 - include: public-images.yml
 
 - include: build-components.yml

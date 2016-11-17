@@ -22,6 +22,6 @@ vagrant destroy && vagrant up
 ```
 Rerunning tap-packager.yml playbook on container: 
 ```
-ansible-playbook --skip-tags=skip_on_vagrant --private-key=.vagrant/machines/tcagent/lxc/private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory tap-packager.yml -v
+vagrant provision
 ```
 

@@ -2,13 +2,13 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.define "gpf" do |gpf|
+  config.vm.define "gpf" do |config|
 
     config.ssh.insert_key = false
 
-    gpf.vm.box = "frensjan/centos-7-64-lxc"
-    gpf.vm.box_check_update = false
-    gpf.vm.hostname = "gpf"
+    config.vm.box = "frensjan/centos-7-64-lxc"
+    config.vm.box_check_update = false
+    config.vm.hostname = "gpf"
 
     if Vagrant.has_plugin?("vagrant-proxyconf")
       if ENV["http_proxy"]

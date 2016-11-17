@@ -14,13 +14,13 @@
 # limitations under the License.                                          #
 ###########################################################################
 
+registry_host: "localhost"
 registry_distribution_port: 5001
 
 # If 'registry' parameter is undefined, image will be pulled from Docker Hub
 public_images:
   - { name: "etcd", tag: "v3.0.10", registry: "quay.io/coreos" }
   - { name: "docker-elasticsearch-kubernetes", tag: "2.4.0", registry: "quay.io/pires" }
-  - { name: "mrlesmithjr/elasticsearch-curator", tag: "4.1.0" }
   - { name: "exechealthz", tag: "1.0", registry: "gcr.io/google_containers" }
   - { name: "kibana", tag: "4.6.1" }
   - { name: "kube2sky", tag: "1.14", registry: "gcr.io/google_containers" }
@@ -34,7 +34,9 @@ public_images:
   - { name: "wurstmeister/kafka", tag: "0.10.0.0" }
   - { name: "frodenas/couchdb", tag: "1.6" }
   - { name: "prom/prometheus", tag: "v1.1.2" }
+  - { name: "trustedanalytics/mosquitto" }
   - { name: "mongo", tag: "3.3.12" }
+  - { name: "cassandra", tag: "v8", registry: "gcr.io/google_samples" }
   - { name: "progrium/consul" }
   - { name: "influxdb", tag: "0.13.0-alpine" }
   - { name: "cfcommunity/logstash" }
@@ -42,3 +44,4 @@ public_images:
   - { name: "frodenas/postgresql" }
   - { name: "frodenas/mysql", tag: "5.6" }
   - { name: "frodenas/mongodb", tag: "3.0" }
+  - { name: "joaodubas/orientdb" }

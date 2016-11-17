@@ -1,0 +1,36 @@
+---
+
+- set_fact:
+    github_url: https://github.com
+  when: github_token is not defined
+
+- set_fact:
+    github_url: https://{{ github_username }}:{{ github_token }}@github.com
+  when: 
+    - github_username is defined
+    - github_token is defined
+    - github_username | trim != ''
+    - github_token | trim != ''
+
+- name: ensure destination directory exists
+  file:
+    path: "{{ dest_dir }}"
+    state: directory
+
+- include: repos.yml
+  with_items: "{{ list_repo | difference(tap_commits | default([]) |  map(attribute='repo') | list) }}"
+  loop_control:
+    loop_var: repo
+  when:
+    - tap_commits is defined
+    - tap_commits|length > 0
+
+- name: clone repo and checkout to commit defined in tap_commits
+  git:
+    repo: "{{ github_url }}/{{ organization }}/{{ item.repo }}.git"
+    dest: "{{ dest_dir }}/{{ item.repo }}"
+    version: "{{ item.commit }}"
+  with_items: "{{ tap_commits | default([]) }}"
+  when: 
+    - tap_commits is defined
+    - tap_commits|length > 0

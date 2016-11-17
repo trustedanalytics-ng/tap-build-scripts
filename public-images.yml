@@ -1,0 +1,8 @@
+---
+
+- name: Download public docker images
+  hosts: all
+  become: yes
+  roles:
+    - docker_images
+

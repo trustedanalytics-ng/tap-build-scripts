@@ -1,0 +1,26 @@
+---
+
+- set_fact:
+    checkouted: false
+    branchname: false
+
+- include: checkout_branch.yml
+  with_items: "{{ tap_branches | default([]) }}"
+  loop_control:
+    loop_var: version
+  when: tap_branches is defined
+
+- name: fail if there is no branch from tap_branches in repo
+  fail:
+    msg: "Branch does not exists"
+  when:
+    - not checkouted
+    - tap_branches is defined
+    - tap_branches|length > 0
+
+- name: clone and checkout to default branch if tap_branches is not defined
+  git:
+    dest: "{{ dest_dir }}/{{ repo }}"
+    repo: "{{ github_url }}/{{ organization }}/{{ repo }}.git"
+  when: tap_branches is not defined or (tap_branches is defined and tap_branches|length > 0)
+

@@ -18,11 +18,9 @@
 
 - include: dev-dependencies.yml
 
-- name: Download and build docker images
-  hosts: all
-  become: yes
-  roles:
-    - docker_images
-
 - include: offline-repository.yml
+
+- include: public-images.yml
+
+- include: build-components.yml
 

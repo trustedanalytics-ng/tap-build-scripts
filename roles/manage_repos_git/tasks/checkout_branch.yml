@@ -1,0 +1,20 @@
+---
+
+- name: remove repo directory
+  file:
+    path: "{{ dest_dir }}/{{ repo }}"
+    state: absent
+
+- name: clone repo and checkout to branch/tag from tap_branches
+  git:
+    dest: "{{ dest_dir }}/{{ repo }}"
+    repo: "{{ github_url }}/{{ organization }}/{{ repo }}.git"
+    version: "{{ version }}"
+  register: checkout_result
+  when: not checkouted
+  ignore_errors: yes
+
+- set_fact:
+    checkouted: true
+  when: checkout_result|changed
+

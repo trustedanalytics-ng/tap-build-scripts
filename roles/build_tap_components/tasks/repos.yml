@@ -20,7 +20,8 @@
 
 - name: clone and checkout to default branch if tap_branches is not defined
   git:
-    dest: "{{ dest_dir }}/{{ repo }}"
+    dest: "{{ repos_checkout_dir }}/{{ repo }}"
     repo: "{{ github_url }}/{{ organization }}/{{ repo }}.git"
+    force: "yes"
   when: tap_branches is not defined or (tap_branches is defined and tap_branches|length > 0)
 

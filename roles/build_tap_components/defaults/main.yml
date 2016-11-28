@@ -1,0 +1,52 @@
+list_repo:
+  - {name: auth-gateway, category: auth-gateway}
+  - {name: data-acquisition, category: maven}
+  - {name: data-catalog, category: data-catalog}
+  - {name: dataset-publisher, category: maven}
+  - {name: downloader, category: maven}
+  - {name: h2o-model-provider, category: maven}
+  - {name: h2o-provisioner, category: maven}
+#  - {name: h2o-scoring-engine-publisher, category: maven}
+  - {name: metadata-parser, category: maven}
+  - {name: model-catalog, category: maven}
+  - {name: platform-snapshot, category: maven}
+  - {name: tap-api-service, category: pack_sh}
+  - {name: tap-blob-store, category: tap-blob-store, 
+     produces: [{name: tap-blob-store}, {name: tap-blob-store/minio}]
+    }
+  - {name: tap-ca, category: pack_sh}
+  - {name: tap-catalog, category: pack_sh}
+  - {name: tap-cli, category: go_exe}
+  - {name: console, category: pack_sh}
+  - {name: tap-container-broker, category: pack_sh}
+  - {name: tap-image-factory, category: pack_sh}
+  - {name: tap-metrics, category: tap-metrics,
+     produces: [{name: metrics-grafana}, {name: metrics-ceph-exporter}]
+    }
+#  - {name: uaa, category: gradle}
+  - {name: tap-monitor, category: pack_sh}
+  - {name: tap-nginx-ingress, category: pack_sh}
+  - {name: tap-template-repository, category: pack_sh}
+  - {name: tap-uaa-client-register-job, category: pack_sh}
+  - {name: uploader, category: maven}
+  - {name: user-management, category: maven}
+  - {name: workflow-scheduler, category: maven}
+  - {name: gearpump-broker, category: maven}
+  - {name: h2o-broker, category: maven}
+  - {name: hdfs-broker, category: maven}
+  - {name: hive-broker, category: maven}
+  - {name: zookeeper-broker, category: maven}
+#  - {name: jupyter, category: dockerfile}
+  - {name: key-counter, category: maven}
+  - {name: micro-reverse-proxy, category: pack_sh}
+  - {name: platform-tests, category: pack_sh}
+
+organization: "intel-data"
+repos_checkout_dir: "/{{ ansible_env.HOME }}/tap-repositories"
+
+registry_host: "localhost"
+registry_distribution_port: 5001
+
+build_environment:
+  GOROOT: "/opt/go"
+  PATH: "{{ ansible_env.PATH }}:/opt/go/bin:{{ ansible_env.HOME }}/bin:/usr/local/bin/node"

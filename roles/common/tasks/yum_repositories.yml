@@ -54,3 +54,4 @@
     - libffi
     - libffi-devel
     - openssl-devel
+    - maven

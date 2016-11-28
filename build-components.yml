@@ -2,7 +2,6 @@
 
 - name: Build components
   hosts: all
-  become: yes
   roles:
-    - manage_repos_git
+    - build_tap_components
 

@@ -73,6 +73,7 @@ yum_dependencies:
   - iftop
   - iotop
   - iputils
+  - jq
   - leveldb
   - libaio
   - libbabeltrace

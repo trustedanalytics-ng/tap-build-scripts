@@ -18,6 +18,9 @@
 TARGET_REGULAR_USER: "{{ lookup('env', 'USER') }}"
 REGULAR_USER_HOME: "{{ lookup('env', 'HOME') }}"
 
+KUBERNETES_VERSION: "v1.3.10"
+KUBERNETES_URL: "https://storage.googleapis.com/kubernetes-release/release/{{ KUBERNETES_VERSION }}/bin/linux/amd64"
+
 #Example usage of manage_repos_git role with defined commits and/or branches/tags
 #tap_commits:
 # - { repo: 'console', commit: '9294201' }

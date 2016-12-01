@@ -42,6 +42,7 @@ yum_dependencies:
   - at
   - autogen-libopts
   - avahi-libs
+  - bash-completion
   - bc
   - bind-utils
   - boost-iostreams

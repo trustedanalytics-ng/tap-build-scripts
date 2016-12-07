@@ -21,9 +21,6 @@
   with_items: "{{ list_repo | difference(tap_commits | default([]) |  map(attribute='repo') | list) }}"
   loop_control:
     loop_var: repo
-  when:
-    - tap_commits is defined
-    - tap_commits|length > 0
 
 - name: clone repo and checkout to commit defined in tap_commits
   git:

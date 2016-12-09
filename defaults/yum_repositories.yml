@@ -35,3 +35,13 @@ yum_repos:
     description: kubernetes repo
     baseurl: https://s3.amazonaws.com/trustedanalytics/v0.8.0/rpm/
     gpgcheck: 0
+  zabbix:
+    name: zabbix
+    baseurl: http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/
+    enabled: 1
+    gpgcheck: 0
+  zabbix-nonsup:
+    name: zabbix non supported
+    baseurl: http://repo.zabbix.com/non-supported/rhel/7/x86_64/
+    enabled: 1
+    gpgcheck: 0

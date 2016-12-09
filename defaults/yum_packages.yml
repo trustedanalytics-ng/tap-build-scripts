@@ -96,10 +96,12 @@ yum_dependencies:
   - nethogs
   - nmap-ncat
   - patch
+  - postgresql-server
   - psmisc
   - python2-crypto
   - python2-ecdsa
   - python2-paramiko
+  - python-psycopg2
   - python-babel
   - python-cephfs
   - python-flask
@@ -115,6 +117,7 @@ yum_dependencies:
   - python-werkzeug
   - redhat-lsb-core
   - redhat-lsb-submod-security
+  - redis
   - screen
   - smartmontools
   - socat
@@ -128,3 +131,6 @@ yum_dependencies:
   - tmux
   - userspace-rcu
   - vim
+  - zabbix-agent
+  - zabbix-server-pgsql
+  - zabbix-web-pgsql

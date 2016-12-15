@@ -96,6 +96,7 @@ yum_dependencies:
   - nethogs
   - nmap-ncat
   - patch
+  - php-fpm
   - postgresql-server
   - psmisc
   - python2-crypto

@@ -26,3 +26,5 @@
 
 - include: build-components.yml
 
+- include: prepare-deployment-package.yml
+

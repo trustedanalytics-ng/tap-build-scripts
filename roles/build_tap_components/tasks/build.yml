@@ -26,7 +26,7 @@
       http_proxy: "{{ ansible_env.http_proxy | default('') }}"
   environment: "{{ build_environment }}"
   with_items: "{{ list_repo }}"
-  when: "{{ item.category != 'dockerfile' }}"
+  when: "{{ item.category not in ['dockerfile', 'script'] }}"
 
 - name: Build components images
   docker_image:

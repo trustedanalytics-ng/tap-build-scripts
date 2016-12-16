@@ -1,4 +1,5 @@
 list_repo:
+  - {name: tap-deploy, category: script}
   - {name: auth-gateway, category: auth-gateway}
   - {name: data-acquisition, category: maven}
   - {name: data-catalog, category: data-catalog}

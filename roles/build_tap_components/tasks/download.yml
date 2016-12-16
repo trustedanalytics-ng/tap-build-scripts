@@ -12,6 +12,22 @@
     - github_username | trim != ''
     - github_token | trim != ''
 
+- name: store github credentials in cache
+  command: git config --global credential.helper cache
+  when:
+    - github_username is defined
+    - github_token is defined
+    - github_username | trim != ''
+    - github_token | trim != ''
+
+- name: set github credentials cache lifetime
+  command: git config --global credential.helper "cache --timeout=10800" # 10800s => 3 hours
+  when:
+    - github_username is defined
+    - github_token is defined
+    - github_username | trim != ''
+    - github_token | trim != ''
+
 - name: ensure destination directory exists
   file:
     path: "{{ repos_checkout_dir }}"

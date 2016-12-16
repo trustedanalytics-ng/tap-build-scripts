@@ -18,25 +18,31 @@
 - name: Prepare yum definitions
   set_fact:
     pdir: "{{ root_directory }}/out/yum"
+    ydir: "{{ root_directory }}/out/yum/repository"
 
-- set_fact:
-    ydir: "{{ pdir }}/repository"
-
-- name: Create repo directory
+- name: Create directories
   file:
-    path: "{{ pdir }}"
+    path: "{{ item }}"
     state: directory
     mode: 0755
+  with_items:
+    - "{{ pdir }}"
+    - "{{ ydir }}"
 
-- name: Create package directory
-  file:
-    path: "{{ ydir }}"
-    state: directory
-    mode: 0755
+- name: Download yum dependencies
+  shell: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" {{ yum_dependencies | join(' ') }}
 
-- name: Download all yum dependencies
-  command: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ item }}"
-  with_list: "{{ yum_dependencies }}"
+- name: Create transaction file (for reverse dependencies)
+  shell: yum install --assumeno --releasever=7 {{ yum_dependencies | join(' ') }}
+  register: yum_result
+  failed_when: "{{ 'yum load-transaction' not in yum_result.stdout }}"
+
+- name: Get transaction file path
+  set_fact:
+    transaction_file: "{{ yum_result.stdout_lines | select('match', '.*yum load-transaction.*') | list | first | regex_replace('.*yum load-transaction ([^\\s]*).*', '\\1') }}"
+
+- name: Download yum reverse dependencies
+  shell: yum load-transaction --downloaddir "{{ ydir }}" --downloadonly {{ transaction_file }}
 
 - name: Download all remote dependencies
   get_url:
@@ -47,9 +53,9 @@
   with_list: "{{ yum_remote_dependencies }}"
 
 - name: Also download all dependencies for remote dependencies
-  command: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ ydir }}/{{ item.name }}"
-  with_list: "{{ yum_remote_dependencies }}"
+  shell: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ ydir }}/{{ item.name }}"
+  with_items: "{{ yum_remote_dependencies }}"
 
 - name: Create yum repo
-  command: createrepo "{{ pdir }}"
+  shell: createrepo "{{ pdir }}"
 

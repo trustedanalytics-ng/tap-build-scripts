@@ -28,3 +28,5 @@ REGULAR_USER_HOME: /home/centos
 
 
 # registry_distribution_port: 5001
+
+# deployment_package_version: 0.8.0.99999

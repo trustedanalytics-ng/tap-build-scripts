@@ -20,7 +20,7 @@
 
 - include: offline-repository.yml
 
-- include: tap-base-images/push.yml
+- include: tap-base-images/tag.yml
 
 - include: public-images.yml
 

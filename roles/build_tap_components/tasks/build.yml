@@ -26,7 +26,7 @@
       http_proxy: "{{ ansible_env.http_proxy | default('') }}"
   environment: "{{ build_environment }}"
   with_items: "{{ list_repo }}"
-  when: "{{ item.category not in ['dockerfile', 'script'] }}"
+  when: "{{ item.category in component_build_categories }}"
 
 - name: Build components images
   docker_image:
@@ -38,7 +38,7 @@
       https_proxy: "{{ ansible_env.https_proxy | default('') }}"
       no_proxy: "{{ ansible_env.no_proxy | default('') }}"
   with_items: "{{ list_repo }}"
-  when: "{{ item.category in ['pack_sh', 'gradle', 'data-catalog', 'dockerfile']}}"
+  when: "{{ item.category in image_build_categories }}"
 
 - name: Push TAP components images to registry
   docker_image:
@@ -47,7 +47,7 @@
     repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
     push: "yes"
   with_items: "{{ list_repo }}"
-  when: "{{ item.category != 'go_exe' and item.produces is undefined }}"
+  when: "{{ item.category not in imageless_categories and item.produces is undefined }}"
 
 - name: Push TAP components images to registry (components with multiple images)
   docker_image:

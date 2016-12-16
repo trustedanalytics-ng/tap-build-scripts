@@ -4,24 +4,15 @@
     github_url: https://github.com
   when: github_token is not defined
 
-- set_fact:
-    github_url: https://{{ github_username }}:{{ github_token }}@github.com
-  when: 
-    - github_username is defined
-    - github_token is defined
-    - github_username | trim != ''
-    - github_token | trim != ''
+- block:
+  - set_fact:
+      github_url: https://{{ github_username }}:{{ github_token }}@github.com
 
-- name: store github credentials in cache
-  command: git config --global credential.helper cache
-  when:
-    - github_username is defined
-    - github_token is defined
-    - github_username | trim != ''
-    - github_token | trim != ''
+  - name: store github credentials in cache
+    command: git config --global credential.helper cache
 
-- name: set github credentials cache lifetime
-  command: git config --global credential.helper "cache --timeout=10800" # 10800s => 3 hours
+  - name: set github credentials cache lifetime
+    command: git config --global credential.helper "cache --timeout=10800" # 10800s => 3 hours
   when:
     - github_username is defined
     - github_token is defined

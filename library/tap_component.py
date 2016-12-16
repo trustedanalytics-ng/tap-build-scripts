@@ -35,7 +35,7 @@ this module.
 '''
 
 COMMIT_FILE_NAME = '.tap_component_build.txt'
-DATA_CATALOG_BUILD_TAG = 'tapimages.us.enableiot.com:8080/data-catalog-build'
+DATA_CATALOG_BUILD_TAG = 'tapimages:8080/data-catalog-build'
 GRADLE_TOMCAT_URL = 'http://repo2.maven.org/maven2/org/apache/tomcat/tomcat/7.0.70/tomcat-7.0.70.tar.gz'
 GRADLE_TOMCAT_PACKAGE_NAME = 'apache-tomcat-7.0.70.tar.gz'
 

@@ -1,46 +1,146 @@
 list_repo:
-  - {name: tap-deploy, category: script}
-  - {name: auth-gateway, category: auth-gateway}
-  - {name: data-acquisition, category: maven}
-  - {name: data-catalog, category: data-catalog}
-  - {name: dataset-publisher, category: maven}
-  - {name: downloader, category: maven}
-  - {name: h2o-model-provider, category: maven}
-  - {name: h2o-provisioner, category: maven}
-#  - {name: h2o-scoring-engine-publisher, category: maven}
-  - {name: metadata-parser, category: maven}
-  - {name: model-catalog, category: maven}
-  - {name: platform-snapshot, category: maven}
-  - {name: tap-api-service, category: pack_sh}
-  - {name: tap-blob-store, category: tap-blob-store, 
-     produces: [{name: tap-blob-store}, {name: tap-blob-store/minio}]
-    }
-  - {name: tap-ca, category: pack_sh}
-  - {name: tap-catalog, category: pack_sh}
-  - {name: tap-cli, category: go_exe}
-  - {name: console, category: pack_sh}
-  - {name: tap-container-broker, category: pack_sh}
-  - {name: tap-image-factory, category: pack_sh}
-  - {name: tap-metrics, category: tap-metrics,
-     produces: [{name: metrics-grafana}, {name: metrics-ceph-exporter}]
-    }
-#  - {name: uaa, category: gradle}
-  - {name: tap-monitor, category: pack_sh}
-  - {name: tap-nginx-ingress, category: pack_sh}
-  - {name: tap-template-repository, category: pack_sh}
-  - {name: tap-uaa-client-register-job, category: pack_sh}
-  - {name: uploader, category: maven}
-  - {name: user-management, category: maven}
-  - {name: workflow-scheduler, category: maven}
-  - {name: gearpump-broker, category: maven}
-  - {name: h2o-broker, category: maven}
-  - {name: hdfs-broker, category: maven}
-  - {name: hive-broker, category: maven}
-  - {name: zookeeper-broker, category: maven}
-#  - {name: jupyter, category: dockerfile}
-  - {name: key-counter, category: maven}
-  - {name: micro-reverse-proxy, category: pack_sh}
-  - {name: platform-tests, category: pack_sh}
+  - name: tap-deploy
+    category: script
+
+  - name: auth-gateway
+    category: auth-gateway
+
+  - name: data-acquisition
+    category: maven
+
+  - name: data-catalog
+    category: data-catalog
+
+  - name: dataset-publisher
+    category: maven
+
+  - name: downloader
+    category: maven
+
+  - name: h2o-model-provider
+    category: maven
+
+  - name: h2o-provisioner
+    category: maven
+
+  - name: h2o-scoring-engine-publisher
+    category: maven
+
+  - name: metadata-parser
+    category: maven
+
+  - name: model-catalog
+    category: maven
+
+  - name: platform-snapshot
+    category: maven
+
+  - name: tap-api-service
+    category: pack_sh
+
+  - name: tap-blob-store
+    category: tap-blob-store
+    produces:
+      - name: tap-blob-store
+      - name: tap-blob-store/minio
+
+  - name: tap-ca
+    category: pack_sh
+
+  - name: tap-catalog
+    category: pack_sh
+
+  - name: tap-cli
+    category: go_exe
+
+  - name: console
+    category: pack_sh
+
+  - name: tap-container-broker
+    category: pack_sh
+
+  - name: tap-image-factory
+    category: pack_sh
+
+  - name: tap-metrics
+    category: tap-metrics
+    produces:
+      - name: metrics-grafana
+      - name: metrics-ceph-exporter
+
+  - name: uaa
+    category: gradle
+
+  - name: tap-monitor
+    category: pack_sh
+
+  - name: tap-nginx-ingress
+    category: pack_sh
+  
+  - name: tap-template-repository
+    category: pack_sh
+
+  - name: tap-uaa-client-register-job
+    category: pack_sh
+
+  - name: uploader
+    category: maven
+
+  - name: user-management
+    category: maven
+
+  - name: workflow-scheduler
+    category: maven
+
+  - name: gearpump-broker
+    category: maven
+
+  - name: h2o-broker
+    category: maven
+
+  - name: hdfs-broker
+    category: maven
+
+  - name: hive-broker
+    category: maven
+
+  - name: zookeeper-broker
+    category: maven
+
+  - name: jupyter
+    category: dockerfile
+
+  - name: key-counter
+    category: maven
+
+  - name: micro-reverse-proxy
+    category: pack_sh
+
+  - name: platform-tests
+    category: pack_sh
+
+# List of categories that will be build using tap-component module
+component_build_categories:
+  - maven
+  - pack_sh
+  - gradle
+  - go_exe
+  - tap-metrics
+  - data-catalog
+  - auth-gateway
+  - tap-blob-store
+
+# List of categories for which a Docker image will be build
+image_build_categories:
+  - pack_sh
+  - gradle
+  - data-catalog
+  - dockerfile
+
+# List of categories that do not produce a Docker image
+imageless_categories:
+  - go_exe
+  - script
 
 organization: "intel-data"
 repos_checkout_dir: "/{{ ansible_env.HOME }}/tap-repositories"

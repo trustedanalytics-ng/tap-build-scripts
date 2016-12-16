@@ -119,6 +119,7 @@ yum_dependencies:
   - redhat-lsb-core
   - redhat-lsb-submod-security
   - redis
+  - rsync
   - screen
   - smartmontools
   - socat

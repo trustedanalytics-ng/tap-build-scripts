@@ -15,7 +15,7 @@
 
 ---
 
-- set_fact: pdir="{{ root_directory }}/out/pip"
+- set_fact: pdir="{{ offline_workdir }}/out/pip"
 
 - name: Create repo directory
   file:

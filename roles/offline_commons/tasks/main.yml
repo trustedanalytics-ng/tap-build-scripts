@@ -23,13 +23,13 @@
 
 - name: Create root repo directory
   file:
-    path: "{{ root_directory }}"
+    path: "{{ offline_workdir }}"
     state: directory
     mode: 0755
 
 - name: Download cm-ext repository
   git:
     repo: https://github.com/cloudera/cm_ext.git
-    dest: "{{ root_directory }}/cm"
+    dest: "{{ offline_workdir }}/cm"
     version: "cm5-5.5.0"
 

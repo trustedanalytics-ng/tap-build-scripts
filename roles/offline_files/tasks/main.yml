@@ -16,7 +16,7 @@
 ---
 
 - set_fact:
-    fdir: "{{ root_directory }}/out/files"
+    fdir: "{{ offline_workdir }}/out/files"
 
 - name: Create files directory
   file:

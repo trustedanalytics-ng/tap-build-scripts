@@ -17,10 +17,10 @@
 
 - name: Prepare repo definitions
   set_fact:
-    repodir: "{{ root_directory }}/out"
+    repodir: "{{ offline_workdir }}/out"
 
 - name: Create repo archive
-  command: tar -zvcf "{{ root_directory }}/CentOS7.2.repo.tar.gz" .
+  command: tar -zvcf "{{ offline_workdir }}/CentOS7.2.repo.tar.gz" .
   args:
     chdir: "{{ repodir }}"
 

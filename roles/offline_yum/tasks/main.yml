@@ -17,8 +17,8 @@
 
 - name: Prepare yum definitions
   set_fact:
-    pdir: "{{ root_directory }}/out/yum"
-    ydir: "{{ root_directory }}/out/yum/repository"
+    pdir: "{{ offline_workdir }}/out/yum"
+    ydir: "{{ offline_workdir }}/out/yum/repository"
 
 - name: Create directories
   file:

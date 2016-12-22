@@ -1,2 +1,0 @@
-root_directory: "/home/{{ TARGET_REGULAR_USER }}/offline_repo"
-

@@ -20,12 +20,7 @@
   hosts: all
   gather_facts: no
   vars_files:
-    - defaults/yum_repositories.yml
-    - defaults/yum_packages.yml
-    - defaults/files_packages.yml
-    - defaults/parcels_packages.yml
-    - defaults/pip_packages.yml
-    - defaults/offline_package.yml
+    - defaults/all.yml
   become: yes
   roles:
     - offline_commons

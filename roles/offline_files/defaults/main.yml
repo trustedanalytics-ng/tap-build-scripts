@@ -1,3 +1,6 @@
+KUBERNETES_VERSION: "v1.3.10"
+KUBERNETES_URL: "https://storage.googleapis.com/kubernetes-release/release/{{ KUBERNETES_VERSION }}/bin/linux/amd64"
+
 files:
   - { url: "http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip", name: "UnlimitedJCEPolicyJDK8.zip", header: "Cookie: oraclelicense=accept-securebackup-cookie" }
   - { url: "http://zookeeper-nss.s3-website-eu-west-1.amazonaws.com/zookeeper_nss.el7.1-0.tar.gz", name: "zookeeper_nss.el7.1-0.tar.gz", header: "Cookie: nss=true" }

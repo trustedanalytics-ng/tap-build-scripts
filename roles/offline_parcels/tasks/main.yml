@@ -16,7 +16,7 @@
 ---
 
 - set_fact:
-    pdir: "{{ root_directory }}/out/parcels"
+    pdir: "{{ offline_workdir }}/out/parcels"
 
 - name: Create repo directory
   file:
@@ -33,6 +33,6 @@
   register: parcel_changed
 
 - name: Create manifest for downloaded parcels
-  command: python "{{ root_directory }}/cm/make_manifest/make_manifest.py" "{{ pdir }}"
+  command: python "{{ offline_workdir }}/cm/make_manifest/make_manifest.py" "{{ pdir }}"
   when: parcel_changed.changed
 

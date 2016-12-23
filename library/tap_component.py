@@ -121,7 +121,7 @@ def build_data_catalog(path, proxy_settings=None):
     if proxy_settings and proxy_settings.get('http_proxy'):
         docker_build_cmd.extend(['--build-arg',
                                  'HTTP_PROXY={0}'.format(proxy_settings['http_proxy'])])
-    docker_build_cmd.append('/build-image')
+    docker_build_cmd.append('build-image/')
 
     return call_build_command_chain(lambda: call_build_command(docker_build_cmd, path),
                                     lambda: call_build_command(['bash', 'archive-deps.sh'], path),
@@ -147,7 +147,7 @@ def build_gradle(path, skip_tests, proxy_settings=None):
                            '-Dhttp.proxyPort={0}'.format(get_proxy_port(proxy_settings['http_proxy']))])
 
     return call_build_command_chain(
-        lambda: call_build_command(['wget', GRADLE_TOMCAT_URL, '-o', GRADLE_TOMCAT_PACKAGE_NAME],
+        lambda: call_build_command(['wget', GRADLE_TOMCAT_URL, '-O', GRADLE_TOMCAT_PACKAGE_NAME],
                                    path),
         lambda: call_build_command(gradle_cmd, path))
 

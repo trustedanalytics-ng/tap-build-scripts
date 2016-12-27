@@ -15,20 +15,31 @@
 ###########################################################################
 
 ---
-TARGET_REGULAR_USER: centos
 
-#Example usage of manage_repos_git role with defined commits and/or branches/tags
-#tap_commits:
-# - { repo: 'console', commit: '9294201' }
-# - { repo: 'h2o-broker', commit: '362754e' }
-#tap_branches:
-# - master
-# - v0.7
+- name: install base yum packages
+  yum:
+    state: present
+    name: "{{ item }}"
+  with_list: "{{ ansible_yum_dependencies }}"
+ 
+- name: install pip
+  yum: 
+    state: present
+    name: python-pip 
 
-offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
+- name: Create tap-ansible directory
+  file:
+    path: "{{ offline_workdir }}/python-ansible"
+    state: directory   
 
-# registry_distribution_port: 5001
-
-# deployment_package_version: 0.8.0.99999
-
-# repos_checkout_dir: {{ ansible_env.HOME }}/tap-repositories
+- name: Install pip dependencies
+  pip:
+    state: present
+    name: "{{ item }}"
+    virtualenv: "{{ offline_workdir }}/python-ansible"
+  with_list: "{{ pip_dependencies }}"
+  
+- name: Create virtualenv and install ansible
+  pip:
+    name: "{{ ansible_url }}"
+    virtualenv: "{{ offline_workdir }}/python-ansible"

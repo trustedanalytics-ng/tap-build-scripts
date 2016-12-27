@@ -28,4 +28,4 @@
     - offline_yum
     - offline_files
     - offline_archive 
-
+    - offline_ansible

@@ -1,2 +1,0 @@
-offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
-

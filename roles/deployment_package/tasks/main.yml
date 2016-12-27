@@ -22,9 +22,12 @@
     state: directory
 
 - name: copy tap-deploy repository to deployment-package workdir
-  command: "cp -R -f {{ repos_dir}}/tap-deploy/ {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
+  command: "cp -R -f {{ repos_dir }}/tap-deploy/ {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
   args:
     creates: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
+
+- name: copy tap-ansible to deployment-package workdir
+  command: "cp -R {{ offline_workdir }}/python-ansible {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
 
 - include: package_registry_remove.yml
 
@@ -77,5 +80,3 @@
   command: "tar -chzvf {{ ansible_env.HOME }}/TAP-{{ deployment_package_version }}.tar.gz TAP-{{ deployment_package_version }}/"
   args:
     chdir: "{{ deployment_package_workdir }}"
-
-

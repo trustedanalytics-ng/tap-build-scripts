@@ -15,20 +15,20 @@
 ###########################################################################
 
 ---
-TARGET_REGULAR_USER: centos
 
-#Example usage of manage_repos_git role with defined commits and/or branches/tags
-#tap_commits:
-# - { repo: 'console', commit: '9294201' }
-# - { repo: 'h2o-broker', commit: '362754e' }
-#tap_branches:
-# - master
-# - v0.7
+ansible_url: https://releases.ansible.com/ansible/ansible-2.2.1.0-0.2.rc2.tar.gz
 
-offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
+ansible_yum_dependencies:
+  - libffi-devel
+  - openssl-devel
+  - python-devel
+  - gcc
+  - epel-release
 
-# registry_distribution_port: 5001
-
-# deployment_package_version: 0.8.0.99999
-
-# repos_checkout_dir: {{ ansible_env.HOME }}/tap-repositories
+pip_dependencies:
+  - httplib2==0.9.2
+  - jinja2==2.8
+  - markupsafe==0.23
+  - netaddr==0.7.18
+  - paramiko==2.1.1
+  - PyYAML==3.11

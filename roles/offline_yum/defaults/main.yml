@@ -88,6 +88,7 @@ yum_dependencies:
   - kubernetes-proxy-1.3.7-1.el7.centos.x86_64
   - kubernetes-scheduler-1.3.7-1.el7.centos.x86_64
   - at
+  - audit
   - autogen-libopts
   - avahi-libs
   - bash-completion

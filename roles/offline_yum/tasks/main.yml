@@ -32,6 +32,9 @@
 - name: Download yum dependencies
   shell: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" {{ yum_dependencies | join(' ') }}
 
+- name: Make yum cache
+  shell: yum --assumeyes makecache
+
 - name: Create transaction file (for reverse dependencies)
   shell: yum install --assumeno --releasever=7 {{ yum_dependencies | join(' ') }}
   register: yum_result

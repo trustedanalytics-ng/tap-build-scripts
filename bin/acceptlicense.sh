@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #
 # Copyright (c) 2016 Intel Corporation
 #
@@ -13,6 +14,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 CDIR=$(dirname $0)
 TPL=$CDIR/thirdpartylicenses

@@ -3,7 +3,10 @@ pip_dependencies:
   - cm_api==13.0.0
   - coverage==4.2
   - decorator==4.0.10
+  - docker-pycreds==0.2.1
+  - docker-py==1.10.6
   - glob2==0.5
+  - httplib2==0.9.2
   - importlib==1.0.4
   - kazoo==2.2.1
   - lxml==3.6.4

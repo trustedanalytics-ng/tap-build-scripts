@@ -75,6 +75,7 @@ yum_dependencies:
   - yum-utils
   - nginx
   - etcd
+  - docker-distribution
   - docker-engine
   - iptables-services
   - flannel-0.6.1-1.el7.centos.x86_64

@@ -46,11 +46,6 @@ yum_repos:
     baseurl: http://download.ceph.com/rpm-jewel/el7/x86_64/
     gpgkey: https://download.ceph.com/keys/release.asc
     gpgcheck: 1
-  kubernetes:
-    name: kubernetes
-    description: kubernetes repo
-    baseurl: https://s3.amazonaws.com/trustedanalytics/v0.8.0/rpm/
-    gpgcheck: 0
   zabbix:
     name: zabbix
     baseurl: http://repo.zabbix.com/zabbix/2.4/rhel/7/x86_64/
@@ -94,16 +89,6 @@ yum_dependencies:
   - docker-distribution
   - docker-engine
   - iptables-services
-  - flannel-0.6.1-1.el7.centos.x86_64
-  - kubernetes-1.3.7-1.el7.centos.x86_64
-  - kubernetes-apiserver-1.3.7-1.el7.centos.x86_64
-  - kubernetes-client-1.3.7-1.el7.centos.x86_64
-  - kubernetes-controller-manager-1.3.7-1.el7.centos.x86_64
-  - kubernetes-kubelet-1.3.7-1.el7.centos.x86_64
-  - kubernetes-master-1.3.7-1.el7.centos.x86_64
-  - kubernetes-node-1.3.7-1.el7.centos.x86_64
-  - kubernetes-proxy-1.3.7-1.el7.centos.x86_64
-  - kubernetes-scheduler-1.3.7-1.el7.centos.x86_64
   - at
   - audit
   - autogen-libopts

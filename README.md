@@ -1,13 +1,37 @@
-# grand-platform-factory
-Tool for preparing TAP deploy package.
-Required Ansible version: `2.2`
+# TAP Build Script (TBS)
+TBS is a tool for building all base infrastructure components and apps. It prepares TAP deployment package.
+
+## Prerequisites
+In order to run TBS, Centos developer machine with some software dependencies is needed.
+
+* Prepare developer machine which meet following requirements:
+ * operating system: CentOS 7 (linux);
+ * 100 GB disk free space;
+ * at least 1 GB RAM;
+ * access to the Internet network.
+* Log into prepared developer machine.
+* Install neccessary dependencies:
+ * epel-release: `yum install -y epel-release`,
+ * ansible dependencies: `yum install -y python-pip pycrypto gcc gcc-c++ libffi libffi-devel openssl-devel wget unzip`
+ * ansible in version 2.2.0.0: `pip install ansible==2.2.0.0`,
+ * git client: `yum install -y git-all`.
+
+## Running TBS
+In order to run TBS follow the commands:
+* Log into developer machine.
+* Clone this repository.
+* Fetch repository submodules: `git submodule init && git submodule update`.
+* Modify group vars, defaults and inventory if it is neccessary. Default values can be used.
+* Run TBS script: `./RUN.sh`.
+
+Warning: Running TBS script you agree with Oracle Java license.
 
 ## Handling proxy
 In order to run grand-platform-factory behind proxy, execute following command:
 ```
 ./RUN.sh --extra-vars='{proxy_env: {http_proxy: "<HTTP_PROXY>", https_proxy: "<HTTPS_PROXY>", no_proxy: "<NO_PROXY>"}}'
 ```
-## Using Vagrant container
+## Testing with Vagrant container
 
 1. Install Vagrant: https://www.vagrantup.com/docs/installation/
 2. Install lxc: `sudo apt install lxc`

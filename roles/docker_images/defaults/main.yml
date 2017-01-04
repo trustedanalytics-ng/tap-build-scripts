@@ -23,7 +23,7 @@ public_images:
   - { name: "docker-elasticsearch-kubernetes", tag: "2.4.0", registry: "quay.io/pires" }
   - { name: "exechealthz", tag: "1.0", registry: "gcr.io/google_containers" }
   - { name: "kibana", tag: "4.6.1" }
-  - { name: "kube2sky", tag: "1.14", registry: "gcr.io/google_containers" }
+  - { name: "gites/kube2sky", tag: "1.14.1" }
   - { name: "skydns", tag: "2015-10-13-8c72f8c", registry: "gcr.io/google_containers" }
   - { name: "nats", tag: "0.8.1" }
   - { name: "elasticsearch", tag: "1.3" }

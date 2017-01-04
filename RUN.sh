@@ -20,23 +20,26 @@ export ANSIBLE_SSH_CONTROL_PATH='%(directory)s/%%h-%%r'
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 CDIR=$(dirname $0)
+SCRIPT_ARGS=""
 
-while getopts a opt ; do
-  case $opt in
-    a) ACCEPTED_LICENSE=1 ;;
-  esac
+ACCEPTED_LICENSE=0
+for var in "$@"
+do
+ if [ "$var" = "-a" ]; then
+   ACCEPTED_LICENSE=1
+ else
+   SCRIPT_ARGS="$SCRIPT_ARGS $var"
+ fi
 done
 
 if [ $ACCEPTED_LICENSE = 1 ]
 then
   bash $CDIR/bin/acceptlicense.sh -a
 else
-  echo "You have to run script with -a option as first argument to accept necessary licenses."
-  exit 1
+  bash $CDIR/bin/acceptlicense.sh
 fi
 
-shift
-exec ansible-playbook tap-packager.yml -i inventory/all $@
+exec ansible-playbook tap-packager.yml -i inventory/all $SCRIPT_ARGS
 
 RET=$?
 echo "Deployment exited with return code: $RET"

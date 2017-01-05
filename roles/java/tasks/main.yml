@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 ---
 
 - name: download jdk rpm
@@ -31,5 +30,7 @@
 - name: set JAVA_HOME environment variable
   lineinfile:
     dest: /etc/environment
-    line: 'export JAVA_HOME=/usr/java/jdk1.8.0_72/'
+    line: 'export JAVA_HOME=/usr/java/jdk1.8.0_72'
 
+- name: Set default java version
+  shell:  /usr/sbin/update-alternatives --set java $JAVA_HOME/jre/bin/java

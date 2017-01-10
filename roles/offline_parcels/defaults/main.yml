@@ -22,4 +22,4 @@ parcel_repos:
   - { host: "http://repo.continuum.io/pkgs/misc/parcels", name: "Anaconda-4.0.0-el7.parcel", sum: "c82ff8626737bc59f247840d419185e0cb05ec91" }
   - { host: "http://hue-sso.s3-website-us-east-1.amazonaws.com", name: "HUE_TRUSTEDANALYTICS-3.9.0-el7.parcel", sum: "2847b4ea3f7ed4abfbca428caa4b14bc7b1eea68" }
   - { host: "http://hue-sso.s3-website-us-east-1.amazonaws.com", name: "HUE_TRUSTEDANALYTICS-3.9.0.2-el7.parcel", sum: "b5c4a1ae3f31075aba4dce806eece41374eab86a" }
-  
+  - { host: "https://github.com/trustedanalytics/daal-parcel/releases/download/v0.7.4", name: "DAAL_LIB-0.7.4-27-el7.parcel", sum: "f9377184dda430fe2869e9fb24eea223ce0cbc8c" }

@@ -131,6 +131,7 @@ yum_dependencies:
   - libbabeltrace
   - libcephfs1
   - libgnome-keyring
+  - libgudev1
   - libicu
   - librados2
   - libradosstriper1

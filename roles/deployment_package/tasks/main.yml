@@ -21,44 +21,40 @@
     path: "{{ deployment_package_workdir }}"
     state: directory
 
-# Cannot use copy module due to problems with .git directories
 - name: copy tap-deploy repository to deployment-package workdir
-  command: "cp -R -f {{ ansible_env.HOME }}/tap-repositories/tap-deploy/ {{ deployment_package_workdir }}"
+  command: "cp -R -f {{ repos_dir}}/tap-deploy/ {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
+  args:
+    creates: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
 
-- name: create tap-images archive
-  command: "tar czf {{ deployment_package_workdir }}/tap-deploy/files/tap-images.tar.gz {{ ansible_env.HOME }}/data"
+- include: package_registry_remove.yml
 
-- name: save registry:2 img
-  docker_image:
-    name: registry
-    tag: 2
-    archive_path: docker-registry.img
+- name: get tap-images from mounted volume
+  command: "mv {{ ansible_env.HOME }}/data/ {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/tap-images"
+  args:
+    creates: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/tap-images"
 
-- name: pack docker-registry.img to tar archive
-  command: "tar czvf {{ deployment_package_workdir }}/tap-deploy/files/docker-registry.img.tar.gz docker-registry.img"
+- include: package_registry_create.yml
 
-- name: save gcr.io/google_containers/pause:2.0 on local disk
-  docker_image:
-    name: gcr.io/google_containers/pause
-    tag: 2.0
-    archive_path: pause.img
+- include: push_base_images.yml
 
-- name: pack pause.img to tar archive
-  command: "tar czvf {{ deployment_package_workdir }}/tap-deploy/files/pause.img.tar.gz pause.img"
+- include: package_registry_remove.yml
+
+- name: get tap-base-images from mounted volume
+  command: "mv {{ ansible_env.HOME }}/data/ {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/tap-base-images"
+  args:
+    creates: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/tap-base-images"
 
 # Cannot use copy module due to following bug https://github.com/ansible/ansible/issues/11702.
 - name: move offline-deployment repository to tap-deploy/files location
-  command: "cp {{ ansible_env.HOME }}/offline_repo/CentOS7.2.repo.tar.gz {{ deployment_package_workdir }}/tap-deploy/files/repository.tar.gz"
+  command: "cp {{ ansible_env.HOME }}/offline_repo/CentOS7.2.repo.tar.gz {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/repository.tar.gz"
+  args:
+    creates: "{{ deployment_package_workdir }}/tap-deploy/files/repository.tar.gz"
 
 #- name: move demo apps
-
-- name: rename tap-deploy to versioned tap package name
-  command: "mv tap-deploy TAP-{{ deployment_package_version }}"
-  args:
-    chdir: "{{ deployment_package_workdir }}"
 
 - name: create TAP deployment package
   command: "tar -chzvf {{ ansible_env.HOME }}/TAP-{{ deployment_package_version }}.tar.gz TAP-{{ deployment_package_version }}/"
   args:
     chdir: "{{ deployment_package_workdir }}"
+
 

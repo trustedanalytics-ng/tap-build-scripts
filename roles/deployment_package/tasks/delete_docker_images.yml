@@ -14,15 +14,14 @@
 # limitations under the License.
 #
 
+---
 
-deployment_package_workdir: "{{ ansible_env.HOME }}/deployment_package"
-deployment_package_version: 0.8.0.99999
-registry_volume_host_path: "{{ ansible_env.HOME }}/data"
-registry_volume_container_path: "/var/lib/registry"
-registry_distribution_port: 5001
-registry_host: "localhost"
-repos_dir: "{{ ansible_env.HOME }}/tap-repositories"
-base_images:
-  - { name: "gcr.io/google_containers/pause", tag: "2.0", final_name: "kubernetes/pause", final_tag: "latest" }
-  - { name: "registry", tag: "2" }
+- name: generate list of images to remove
+  shell: "docker images | grep -vE \"registry|IMAGE ID\" | awk '{print $3}' | uniq"
+  register: command_result
+
+- name: delete docker images from docker registry
+  command: "docker rmi -f {{ item }}"
+  with_items: "{{ command_result.stdout_lines }}"
+  when: "{{ 'stdout_lines' in command_result }}"
 

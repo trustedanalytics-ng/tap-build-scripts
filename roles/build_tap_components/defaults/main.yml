@@ -51,8 +51,14 @@ list_repo:
   - name: platform-snapshot
     category: maven
 
+  - name: tap-cli
+    category: go_exe
+
   - name: tap-api-service
     category: pack_sh
+    copy_files:
+      - src: "{{ repos_checkout_dir }}/tap-cli/application/*"
+        dest: "{{ repos_checkout_dir }}/tap-api-service/resources/"
 
   - name: tap-blob-store
     category: tap-blob-store
@@ -65,9 +71,6 @@ list_repo:
 
   - name: tap-catalog
     category: pack_sh
-
-  - name: tap-cli
-    category: go_exe
 
   - name: console
     category: console

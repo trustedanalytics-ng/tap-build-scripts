@@ -21,6 +21,7 @@
     name: "{{ item.name }}"
     path: "{{ repos_checkout_dir }}/{{ item.name }}"
     category: "{{ item.category }}"
+    copy_files: "{{ item.copy_files | default(omit) }}"
     skip_tests: "yes"
     proxy_settings:
       http_proxy: "{{ ansible_env.http_proxy | default('') }}"

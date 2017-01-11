@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = '''
+DOCUMENTATION = ''' |
 ---
 module: tap_component
 short_description: Builds TAP components.
@@ -25,11 +25,17 @@ not present, or it's content doesn't represent current commit in component's rep
 Handling proxy
 Pass following parameter:
 proxy_settings:
-  http_proxy <http_proxy>
+  http_proxy: <http_proxy>
 
 in module invocation in order to pass proxy settings to build commands.
 For Maven components, please configure proxy settings before running 
 this module.
+
+Copying files in proper destinations before component build
+Pass following parameter:
+copy_files:
+- src: <dependency file location>
+  dest: <dependency file destination>
 '''
 
 COMMIT_FILE_NAME = '.tap_component_build.txt'
@@ -42,6 +48,7 @@ GRADLE_TOMCAT_PACKAGE_NAME = 'apache-tomcat-7.0.70.tar.gz'
 NOTHING_TO_CHANGE = {'success': True}
 
 import os
+import glob
 import subprocess
 
 
@@ -187,6 +194,33 @@ def build_tap_blob_store(path, proxy_settings=None):
                                     lambda: call_build_command(build_blob_store_cmd, path),
                                     lambda: call_build_command(build_minio_cmd, path))
 
+def copy_files(files):
+    for file in files:
+        src = file['src']
+        dest = file['dest']
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+
+        if os.path.isfile(src):
+            cmd = ['cp', src, dest]
+        elif os.path.isdir(src):
+            cmd = ['cp', '-r', src, dest]
+        elif glob.glob(src):
+            cmd = ['cp']
+            cmd.extend(glob.glob(src))
+            cmd.append(dest)
+        else:
+            return {'success': False,
+                    'output': 'Source file/directory {0} does not exist.'.format(src)}
+
+        try:
+            subprocess.call(cmd)
+        except subprocess.CalledProcessError as e:
+            return {'success': False,
+                    'output': 'Failed to copy file {0}.'.format(str(e))}
+
+    return {'success': True, 'output': 'Files copied.'}
+
 
 def main():
     module = AnsibleModule(
@@ -197,11 +231,17 @@ def main():
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
                                                   'go_exe', 'tap-metrics', 'tap-blob-store', 'console']),
             skip_tests=dict(required=False, default=True, type='bool'),
-            proxy_settings=dict(required=False, default=None, type='dict')
+            proxy_settings=dict(required=False, default=None, type='dict'),
+            copy_files=dict(required=False, default=None, type='list')
         )
     )
 
     params = module.params
+
+    if params['copy_files']:
+        copy_files_result = copy_files(params['copy_files'])
+        if not copy_files_result['success']:
+            module.fail_json(msg=copy_files_result['output'])
 
     build_result = {'success': False, 'output': 'Unsupported build category.'}
 

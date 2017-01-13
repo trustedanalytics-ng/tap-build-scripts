@@ -17,8 +17,8 @@
 ---
 
 - name: Download public docker images
+  become: "{{ become_root | default('no') }}"
   hosts: all
-  become: yes
   roles:
     - docker_images
 

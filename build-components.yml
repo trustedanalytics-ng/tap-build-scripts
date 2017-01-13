@@ -17,6 +17,7 @@
 ---
 
 - name: Build components
+  become: "{{ become_root | default('no') }}"
   hosts: all
   roles:
     - build_tap_components

@@ -21,10 +21,18 @@
 - include: offline-repository.yml
 
 - include: tap-base-images/tag.yml
+  vars:
+    become_root: "yes"
 
 - include: public-images.yml
+  vars:
+    become_root: "yes"
 
 - include: build-components.yml
+  vars:
+    become_root: "yes"
 
 - include: prepare-deployment-package.yml
+  vars:
+    become_root: "yes"
 

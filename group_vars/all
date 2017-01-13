@@ -16,7 +16,6 @@
 
 ---
 TARGET_REGULAR_USER: centos
-REGULAR_USER_HOME: /home/centos
 
 #Example usage of manage_repos_git role with defined commits and/or branches/tags
 #tap_commits:

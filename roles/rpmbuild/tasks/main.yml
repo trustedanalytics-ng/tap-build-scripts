@@ -16,7 +16,7 @@
 
 - name: Create rpmbuild into home user directory
   file:
-    path: "{{ REGULAR_USER_HOME }}/rpmbuild/{{ item }}"
+    path: "{{ ansible_env.HOME }}/rpmbuild/{{ item }}"
     owner: "{{ TARGET_REGULAR_USER }}"
     state: directory
   with_items:
@@ -28,13 +28,13 @@
 
 - name: Create .rpmmacros file under user home directory
   file:
-    path: "{{ REGULAR_USER_HOME }}/.rpmmacros"
+    path: "{{ ansible_env.HOME }}/.rpmmacros"
     owner: "{{ TARGET_REGULAR_USER }}"
     state: touch
 
 - name: Add config into .rpmmacros file
   lineinfile:
-    dest: "{{ REGULAR_USER_HOME }}/.rpmmacros"
+    dest: "{{ ansible_env.HOME }}/.rpmmacros"
     line: '%_topdir %(echo $HOME)/rpmbuild'
     state: present
 

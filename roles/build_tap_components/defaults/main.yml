@@ -70,7 +70,7 @@ list_repo:
     category: go_exe
 
   - name: console
-    category: pack_sh
+    category: console
 
   - name: tap-container-broker
     category: pack_sh
@@ -149,6 +149,7 @@ component_build_categories:
   - data-catalog
   - auth-gateway
   - tap-blob-store
+  - console
 
 # List of categories for which a Docker image will be build
 image_build_categories:
@@ -156,6 +157,7 @@ image_build_categories:
   - gradle
   - data-catalog
   - dockerfile
+  - console
 
 # List of categories that do not produce a Docker image
 imageless_categories:
@@ -171,7 +173,6 @@ registry_distribution_port: 5001
 
 build_environment:
   GOROOT: "/opt/go"
-  PATH: "{{ ansible_env.PATH }}:/opt/go/bin:{{ ansible_env.HOME }}/bin:/usr/local/bin/node"
+  PATH: "{{ ansible_env.PATH }}:/opt/go/bin:{{ ansible_env.HOME }}/bin:/usr/local/bin:/usr/bin:/{{ ansible_env.HOME }}/.gem/ruby/bin"
 
 rpms_directory: "{{ ansible_env.HOME }}/tap-rpms"
-

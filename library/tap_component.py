@@ -125,6 +125,9 @@ def build_pack_sh(path):
 def build_rpm(path):
     return call_pipelined_command('cd {} && make build_rpm PKG_VERSION=TAP'.format(path))
 
+def build_console(path):
+    return call_build_command(['sudo', 'PATH={0}'.format(os.environ['PATH']), 'bash', 'pack.sh'], path)
+
 def build_go_exe(path):
     return call_build_command(['make', 'build_anywhere'], path)
 
@@ -192,7 +195,7 @@ def main():
             name=dict(required=True, type='str'),
             path=dict(required=True, type='str'),
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
-                                                  'go_exe', 'tap-metrics', 'tap-blob-store']),
+                                                  'go_exe', 'tap-metrics', 'tap-blob-store', 'console']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict')
         )
@@ -220,6 +223,8 @@ def main():
         build_result = build_tap_metrics(params['path'], params['proxy_settings'])
     elif params['category'] == 'tap-blob-store':
         build_result = build_tap_blob_store(params['path'])
+    elif params['category'] == 'console':
+        build_result = build_console(params['path'])
 
     if not build_result['success']:
         module.fail_json(msg="Building {name} failed. Log: {output}".format(name=params['name'],

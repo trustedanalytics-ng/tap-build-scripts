@@ -17,6 +17,7 @@
 ---
 
 - name: Prepare deployment archive
+  become: "{{ become_root | default('no') }}"
   hosts: all
   roles:
     - deployment_package

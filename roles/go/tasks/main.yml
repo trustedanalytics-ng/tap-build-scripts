@@ -26,7 +26,7 @@
 
 - name: Create go workspace
   file:
-    path: "{{ REGULAR_USER_HOME }}/go"
+    path: "{{ ansible_env.HOME }}/go"
     state: directory
     owner: "{{ TARGET_REGULAR_USER }}"
     group: "{{ TARGET_REGULAR_USER }}"
@@ -38,5 +38,5 @@
   with_items:
     - { line: 'export GOROOT=/opt/go' }
     - { line: 'export PATH=$PATH:$GOROOT/bin' }
-    - { line: 'export GOPATH={{ REGULAR_USER_HOME }}/go' }
+    - { line: 'export GOPATH={{ ansible_env.HOME }}/go' }
     - { line: 'export PATH=$PATH:$GOPATH/bin' }

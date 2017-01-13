@@ -35,8 +35,7 @@ Vagrant.configure(2) do |config|
       ansible.playbook = "tap-packager.yml"
       ansible.skip_tags = "skip_on_vagrant"
       ansible.extra_vars = {
-        TARGET_REGULAR_USER: "vagrant",
-        REGULAR_USER_HOME: "/home/vagrant"
+        TARGET_REGULAR_USER: "vagrant"
       }
 
       if config.proxy.http and config.proxy.https

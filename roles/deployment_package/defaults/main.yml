@@ -25,4 +25,5 @@ repos_dir: "{{ ansible_env.HOME }}/tap-repositories"
 base_images:
   - { name: "gcr.io/google_containers/pause", tag: "2.0", final_name: "kubernetes/pause", final_tag: "latest" }
   - { name: "registry", tag: "2" }
+rpms_directory: "{{ ansible_env.HOME }}/tap-rpms"
 

@@ -135,10 +135,14 @@ list_repo:
   - name: platform-tests
     category: pack_sh
 
+  - name: tap-ceph-broker
+    category: rpm
+
 # List of categories that will be build using tap-component module
 component_build_categories:
   - maven
   - pack_sh
+  - rpm
   - gradle
   - go_exe
   - tap-metrics
@@ -157,9 +161,10 @@ image_build_categories:
 imageless_categories:
   - go_exe
   - script
+  - rpm
 
 organization: "intel-data"
-repos_checkout_dir: "/{{ ansible_env.HOME }}/tap-repositories"
+repos_checkout_dir: "{{ ansible_env.HOME }}/tap-repositories"
 
 registry_host: "localhost"
 registry_distribution_port: 5001
@@ -167,3 +172,6 @@ registry_distribution_port: 5001
 build_environment:
   GOROOT: "/opt/go"
   PATH: "{{ ansible_env.PATH }}:/opt/go/bin:{{ ansible_env.HOME }}/bin:/usr/local/bin/node"
+
+rpms_directory: "{{ ansible_env.HOME }}/tap-rpms"
+

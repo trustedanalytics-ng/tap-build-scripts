@@ -56,3 +56,17 @@
     repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
     push: "yes"
   with_items: "{{ list_repo | map(attribute='produces') | select('defined') | list }}"
+
+- name: create rpms directory
+  file:
+    path: "{{ rpms_directory }}"
+    state: directory
+    mode: 0766
+
+- name: move built rpms to rpms directory
+  shell: "mv *.rpm {{ rpms_directory }}"
+  args:
+    chdir: "{{ repos_checkout_dir }}/{{ item.name }}"
+  with_items: "{{ list_repo }}"
+  when: "{{ item.category == 'rpm' }}"
+

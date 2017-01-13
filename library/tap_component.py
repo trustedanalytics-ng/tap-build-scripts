@@ -69,6 +69,17 @@ def is_component_already_build(path):
     with open(commit_file_path, "r") as commit_file:
         return commit_file.read() == get_commit_hash(path)
 
+def call_pipelined_command(cmd):
+    try:
+        return_code = subprocess.call(cmd, shell=True)
+        if return_code != 0:
+            raise subprocess.CalledProcessError(cmd, return_code)
+
+    except subprocess.CalledProcessError:
+        return {'success': False, 'output': return_code}
+
+    return {'success': True, 'output': return_code}
+
 def call_build_command(cmd, path):
     if is_component_already_build(path):
         return NOTHING_TO_CHANGE
@@ -110,6 +121,9 @@ def build_maven(path, skip_tests=False):
 
 def build_pack_sh(path):
     return call_build_command(['bash', 'pack.sh'], path)
+
+def build_rpm(path):
+    return call_pipelined_command('cd {} && make build_rpm PKG_VERSION=TAP'.format(path))
 
 def build_go_exe(path):
     return call_build_command(['make', 'build_anywhere'], path)
@@ -177,7 +191,7 @@ def main():
             state=dict(default='build', choices=['build']),
             name=dict(required=True, type='str'),
             path=dict(required=True, type='str'),
-            category=dict(required=True, choices=['maven', 'pack_sh', 'gradle', 'data-catalog', 'auth-gateway',
+            category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
                                                   'go_exe', 'tap-metrics', 'tap-blob-store']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict')
@@ -192,6 +206,8 @@ def main():
         build_result = build_maven(params['path'], params['skip_tests'])
     elif params['category'] == 'pack_sh':
         build_result = build_pack_sh(params['path'])
+    elif params['category'] == 'rpm':
+        build_result = build_rpm(params['path'])
     elif params['category'] == 'gradle':
         build_result = build_gradle(params['path'], params['skip_tests'], params['proxy_settings'])
     elif params['category'] == 'go_exe':

@@ -119,6 +119,7 @@ yum_dependencies:
   - cryptsetup
   - cups-client
   - cups-libs
+  - e2fsprogs
   - ed
   - fcgi
   - fuse-libs

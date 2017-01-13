@@ -50,6 +50,9 @@
   args:
     creates: "{{ deployment_package_workdir }}/tap-deploy/files/repository.tar.gz"
 
+- name: move tap rpms to tap-deploy/files location
+  shell: "cp {{ rpms_directory }}/*.rpm {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files"
+
 #- name: move demo apps
 
 - name: create TAP deployment package

@@ -16,13 +16,19 @@
 
 ---
 
+- name: remove default openjdk java
+  file:
+    path: /usr/lib/jvm/
+    state: absent
+  become: yes
+
 - name: download jdk rpm
   get_url:
     url: "{{ jdk_url }}"
     headers: "{{ jdk_cookie }}"
     dest: /tmp/java-jdk-1.8.0_72.rpm
     mode: 0666
-  
+
 - name: install jdk rpm
   yum:
     name: /tmp/java-jdk-1.8.0_72.rpm
@@ -35,3 +41,25 @@
 
 - name: Set default java version
   shell:  /usr/sbin/update-alternatives --set java $JAVA_HOME/jre/bin/java
+
+- name: Download and extract maven
+  unarchive:
+    src: "{{ maven_url }}"
+    dest: "/opt"
+    remote_src: yes
+
+- name: Create symlink for maven
+  file:
+    src: "/opt/apache-maven-{{ maven_version }}"
+    dest: /opt/maven
+    state: link
+
+- name: setup environment
+  lineinfile:
+    dest: /etc/profile.d/maven.sh
+    line: "{{ item.line }}"
+    create: yes
+  with_items:
+    - { line: 'export M2_HOME=/opt/maven' }
+    - { line: 'export PATH=${M2_HOME}/bin:${PATH}' }
+

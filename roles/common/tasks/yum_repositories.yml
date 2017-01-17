@@ -27,16 +27,6 @@
     retries: 10
     state: present
 
-- name: add maven repository
-  yum_repository:
-    name: epel-apache-maven
-    description: epel apache maven repository
-    ip_resolve: 4
-    baseurl: http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-$releasever/$basearch/
-    gpgcheck: no
-    retries: 10
-    state: present
-
 - name: install prerequisite packages
   yum:
     name: "{{ item }}"
@@ -64,4 +54,3 @@
     - libffi
     - libffi-devel
     - openssl-devel
-    - maven

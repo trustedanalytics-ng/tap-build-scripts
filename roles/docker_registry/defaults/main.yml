@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 Intel Corporation
+# Copyright (c) 2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,28 +15,7 @@
 #
 
 ---
-
-- include: dev-dependencies.yml
-
-- include: offline-repository.yml
-
-- include: docker-registry.yml
-  vars:
-    become_root: "yes"
-
-- include: tap-base-images/tag.yml
-  vars:
-    become_root: "yes"
-
-- include: public-images.yml
-  vars:
-    become_root: "yes"
-
-- include: build-components.yml
-  vars:
-    become_root: "yes"
-
-- include: prepare-deployment-package.yml
-  vars:
-    become_root: "yes"
+registry_volume_host_path: "{{ ansible_env.HOME }}/data"
+registry_volume_container_path: "/var/lib/registry"
+registry_distribution_port: 5001
 

@@ -19,4 +19,3 @@
 - include: install.yml
 - include: docker_proxy.yml
   when: proxy_env is defined
-- include: registry.yml

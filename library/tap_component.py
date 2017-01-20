@@ -50,9 +50,39 @@ NOTHING_TO_CHANGE = {'success': True}
 import os
 import glob
 import subprocess
+import threading
 
 
 from ansible.module_utils.basic import AnsibleModule
+
+class BuildRunner:
+    timeout_mins = 30
+
+    @staticmethod
+    def call_build_command(cmd, path):
+        if is_component_already_build(path):
+            return NOTHING_TO_CHANGE
+
+        output = ''
+        try:
+            build_process = subprocess.Popen(cmd, cwd=path, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            timer = threading.Timer(BuildRunner.timeout_mins*60, build_process.terminate)
+            try:
+                timer.start()
+                output, err = build_process.communicate()
+            finally:
+                timer.cancel()
+            if build_process.returncode != 0:
+                raise subprocess.CalledProcessError(cmd, build_process.returncode)
+
+        except subprocess.CalledProcessError:
+            # Assume that process is killed by threading.Timer, if no output is received
+            if not output:
+                output = 'Timeout ({0} min.) exceeded.'.format(BuildRunner.timeout_mins)
+            return {'success': False, 'output': output}
+
+        return {'success': True, 'output': output}
+
 
 def get_commit_hash(path):
     return subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=path)
@@ -87,23 +117,6 @@ def call_pipelined_command(cmd):
 
     return {'success': True, 'output': return_code}
 
-def call_build_command(cmd, path):
-    if is_component_already_build(path):
-        return NOTHING_TO_CHANGE
-
-    output = ''
-    try:
-        build_process = subprocess.Popen(cmd, cwd=path, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        out, err = build_process.communicate()
-        output = out
-        if build_process.returncode != 0:
-            raise subprocess.CalledProcessError(cmd, build_process.returncode)
-
-    except subprocess.CalledProcessError:
-        return {'success': False, 'output': output}
-
-    return {'success': True, 'output': output}
-
 def call_build_command_chain(*build_commands):
     build_result = {}
     for build_command in build_commands:
@@ -124,10 +137,13 @@ def build_maven(path, skip_tests=False):
     if skip_tests:
         command.append('-Dmaven.test.skip=true')
 
-    return call_build_command(command, path)
+    return BuildRunner.call_build_command(command, path)
 
 def build_pack_sh(path):
-    return call_build_command(['bash', 'pack.sh'], path)
+    return BuildRunner.call_build_command(['bash', 'pack.sh'], path)
+
+def build_console(path):
+    return BuildRunner.call_build_command(['sudo', 'PATH={0}'.format(os.environ['PATH']), 'bash', 'pack.sh'], path)
 
 def build_rpm(path):
     return call_pipelined_command('cd {} && make build_rpm PKG_VERSION=TAP'.format(path))
@@ -136,7 +152,7 @@ def build_console(path):
     return call_build_command(['sudo', 'PATH={0}'.format(os.environ['PATH']), 'bash', 'pack.sh'], path)
 
 def build_go_exe(path):
-    return call_build_command(['make', 'build_anywhere'], path)
+    return BuildRunner.call_build_command(['make', 'build_anywhere'], path)
 
 def build_data_catalog(path, proxy_settings=None):
     docker_build_cmd = ['docker', 'build', '-t', DATA_CATALOG_BUILD_TAG]
@@ -145,17 +161,17 @@ def build_data_catalog(path, proxy_settings=None):
                                  'HTTP_PROXY={0}'.format(proxy_settings['http_proxy'])])
     docker_build_cmd.append('build-image/')
 
-    return call_build_command_chain(lambda: call_build_command(docker_build_cmd, path),
-                                    lambda: call_build_command(['bash', 'archive-deps.sh'], path),
-                                    lambda: call_build_command(['bash', 'pack.sh'], path))
+    return call_build_command_chain(lambda: BuildRunner.call_build_command(docker_build_cmd, path),
+                                    lambda: BuildRunner.call_build_command(['bash', 'archive-deps.sh'], path),
+                                    lambda: BuildRunner.call_build_command(['bash', 'pack.sh'], path))
 
 def build_auth_gateway(path, skip_tests):
     package_cmd = ['mvn', '-B', 'clean', 'package']
     if skip_tests:
         package_cmd.append('-Dmaven.test.skip=true')
 
-    return call_build_command_chain(lambda: call_build_command(package_cmd, path),
-                                    lambda: call_build_command(['mvn', '-B', '-f',
+    return call_build_command_chain(lambda: BuildRunner.call_build_command(package_cmd, path),
+                                    lambda: BuildRunner.call_build_command(['mvn', '-B', '-f',
                                                                 os.path.join(path, 'auth-gateway-engine/pom.xml'),
                                                                 'docker:build'],
                                                                path))
@@ -169,17 +185,17 @@ def build_gradle(path, skip_tests, proxy_settings=None):
                            '-Dhttp.proxyPort={0}'.format(get_proxy_port(proxy_settings['http_proxy']))])
 
     return call_build_command_chain(
-        lambda: call_build_command(['wget', GRADLE_TOMCAT_URL, '-O', GRADLE_TOMCAT_PACKAGE_NAME],
+        lambda: BuildRunner.call_build_command(['wget', GRADLE_TOMCAT_URL, '-O', GRADLE_TOMCAT_PACKAGE_NAME],
                                    path),
-        lambda: call_build_command(gradle_cmd, path))
+        lambda: BuildRunner.call_build_command(gradle_cmd, path))
 
 def build_tap_metrics(path, proxy_settings=None):
     build_anywhere_cmd = ['bash', 'build_anywhere.sh']
     if proxy_settings and proxy_settings.get('http_proxy'):
         build_anywhere_cmd.append('build_arg_HTTP_PROXY={0}'.format(proxy_settings['http_proxy']))
 
-    return call_build_command_chain(lambda: call_build_command(build_anywhere_cmd, path),
-                                    lambda: call_build_command(['bash', 'build_docker_images.sh'], path))
+    return call_build_command_chain(lambda: BuildRunner.call_build_command(build_anywhere_cmd, path),
+                                    lambda: BuildRunner.call_build_command(['bash', 'build_docker_images.sh'], path))
 
 def build_tap_blob_store(path, proxy_settings=None):
     build_blob_store_cmd = ['docker', 'build', '-t', 'tap-blob-store']
@@ -191,8 +207,8 @@ def build_tap_blob_store(path, proxy_settings=None):
     build_minio_cmd.append('minio/')
 
     return call_build_command_chain(lambda: build_pack_sh(path),
-                                    lambda: call_build_command(build_blob_store_cmd, path),
-                                    lambda: call_build_command(build_minio_cmd, path))
+                                    lambda: BuildRunner.call_build_command(build_blob_store_cmd, path),
+                                    lambda: BuildRunner.call_build_command(build_minio_cmd, path))
 
 def copy_files(files):
     for file in files:
@@ -232,7 +248,8 @@ def main():
                                                   'go_exe', 'tap-metrics', 'tap-blob-store', 'console']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict'),
-            copy_files=dict(required=False, default=None, type='list')
+            copy_files=dict(required=False, default=None, type='list'),
+            timeout=dict(required=False, default=30, type='int')
         )
     )
 
@@ -242,6 +259,9 @@ def main():
         copy_files_result = copy_files(params['copy_files'])
         if not copy_files_result['success']:
             module.fail_json(msg=copy_files_result['output'])
+
+    if params['timeout']:
+        BuildRunner.timeout_mins = params['timeout']
 
     build_result = {'success': False, 'output': 'Unsupported build category.'}
 

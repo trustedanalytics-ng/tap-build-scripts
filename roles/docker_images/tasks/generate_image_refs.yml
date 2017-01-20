@@ -1,11 +1,11 @@
 #
-# Copyright (c) 2016 Intel Corporation
+# Copyright (c) 2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,9 +16,9 @@
 
 ---
 
-- include: download.yml
-- include: docker_config.yml
-- include: maven_proxy.yml
-  when: "{{ ansible_env.http_proxy is defined and ansible_env.no_proxy is defined }}"
-- include: build.yml
-- include: generate_refs_file.yml
+- name: Generate image_refs.txt file
+  collect_image_version:
+    image_name: "{{ item.registry + '/' + item.name if item.registry is defined else item.name }}" 
+    image_tag: "{{ item.tag | default(omit) }}" 
+    version_file_path: "{{ ansible_env.HOME }}/image_refs.txt"
+  with_items: "{{ public_images }}"

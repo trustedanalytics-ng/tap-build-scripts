@@ -17,4 +17,5 @@
 ---
 
 - include: public_images.yml
+- include: generate_image_refs.yml
   

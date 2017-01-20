@@ -55,6 +55,18 @@
 
 #- name: move demo apps
 
+- name: copy refs.txt file to tap package directory
+  copy:
+    src: "{{ ansible_env.HOME }}/refs.txt"
+    dest: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/refs.txt"
+    remote_src: yes
+
+- name: copy image_refs.txt file to tap package directory
+  copy:
+    src: "{{ ansible_env.HOME }}/image_refs.txt"
+    dest: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/image_refs.txt"
+    remote_src: yes
+
 - name: create TAP deployment package
   command: "tar -chzvf {{ ansible_env.HOME }}/TAP-{{ deployment_package_version }}.tar.gz TAP-{{ deployment_package_version }}/"
   args:

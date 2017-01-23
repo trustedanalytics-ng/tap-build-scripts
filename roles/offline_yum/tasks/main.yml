@@ -60,6 +60,9 @@
   shell: yum install -y --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" "{{ ydir }}/{{ item.name }}"
   with_items: "{{ yum_remote_dependencies }}"
 
+- name: Download kernel packages
+  shell: yum install --assumeyes --releasever=7 --installroot="/tmp" --downloadonly --downloaddir "{{ ydir }}" {{ item }}
+  with_items: "{{ yum_kernel_packages }}"
+
 - name: Create yum repo
   shell: createrepo "{{ pdir }}"
-

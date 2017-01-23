@@ -18,7 +18,6 @@
 
 - name: Create offline repository package
   hosts: all
-  gather_facts: no
   vars_files:
     - defaults/all
   become: yes

@@ -66,6 +66,11 @@ yum_repos:
 yum_remote_dependencies:
   - { url: "http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-x64.rpm", name: "jdk1.8.0_72.rpm", header: "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" }
 
+yum_kernel_packages:
+  - "kernel kernel-devel kernel-headers"
+  - "kernel-lt kernel-lt-devel kernel-lt-headers"
+  - "kernel-ml kernel-ml-devel kernel-ml-headers"
+
 yum_dependencies:
   - cloudera-manager-daemons
   - cloudera-manager-server 
@@ -133,7 +138,6 @@ yum_dependencies:
   - iotop
   - iputils
   - jq
-  - kernel-ml
   - leveldb
   - libaio
   - libbabeltrace
@@ -196,4 +200,3 @@ yum_dependencies:
   - zabbix-agent
   - zabbix-server-pgsql
   - zabbix-web-pgsql
-

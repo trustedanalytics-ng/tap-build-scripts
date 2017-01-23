@@ -132,8 +132,9 @@ def get_proxy_host(http_proxy):
 def get_proxy_port(http_proxy):
     return http_proxy.split(':')[2]
 
-def build_maven(path, skip_tests=False):
-    command = ['mvn', '-B', 'clean', 'package', 'docker:build']
+def build_maven(path, skip_tests=True, goals='clean package docker:build'):
+    command = ['mvn', '-B']
+    command.extend(goals.split())
     if skip_tests:
         command.append('-Dmaven.test.skip=true')
 
@@ -147,9 +148,6 @@ def build_console(path):
 
 def build_rpm(path):
     return call_pipelined_command('cd {} && make build_rpm PKG_VERSION=TAP'.format(path))
-
-def build_console(path):
-    return call_build_command(['sudo', 'PATH={0}'.format(os.environ['PATH']), 'bash', 'pack.sh'], path)
 
 def build_go_exe(path):
     return BuildRunner.call_build_command(['make', 'build_anywhere'], path)
@@ -237,6 +235,13 @@ def copy_files(files):
 
     return {'success': True, 'output': 'Files copied.'}
 
+def build_gearpump_dashboard(path, skip_tests=True):
+    return call_build_command_chain(lambda: build_pack_sh(path),
+                                    lambda: build_maven(path, skip_tests))
+
+def build_scoring_engine(path, skip_tests=True):
+    return call_build_command_chain(lambda: build_maven(path, skip_tests, 'clean install -P dev'),
+                                    lambda: build_maven(path, skip_tests, 'package -P build-server -f docker/pom.xml'))
 
 def main():
     module = AnsibleModule(
@@ -245,7 +250,8 @@ def main():
             name=dict(required=True, type='str'),
             path=dict(required=True, type='str'),
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
-                                                  'go_exe', 'tap-metrics', 'tap-blob-store', 'console']),
+                                                  'go_exe', 'tap-metrics', 'tap-blob-store', 'console',
+                                                  'gearpump-dashboard', 'scoring-engine']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict'),
             copy_files=dict(required=False, default=None, type='list'),
@@ -285,6 +291,10 @@ def main():
         build_result = build_tap_blob_store(params['path'])
     elif params['category'] == 'console':
         build_result = build_console(params['path'])
+    elif params['category'] == 'gearpump-dashboard':
+        build_result = build_gearpump_dashboard(params['path'], params['skip_tests'])
+    elif params['category'] == 'scoring-engine':
+        build_result = build_scoring_engine(params['path'], params['skip_tests'])
 
     if not build_result['success']:
         module.fail_json(msg="Building {name} failed. Log: {output}".format(name=params['name'],

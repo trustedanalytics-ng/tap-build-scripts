@@ -50,7 +50,7 @@
 
     - name: Install docker packages
       yum:
-        name: docker-engine
+        name: "docker-engine-{{ docker_version }}"
         state: present
         update_cache: yes
 

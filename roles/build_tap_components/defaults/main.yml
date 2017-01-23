@@ -86,11 +86,15 @@ list_repo:
     produces:
       - name: metrics-grafana
       - name: metrics-ceph-exporter
+      - name: metrics-grafana-uaa-syncer
 
   - name: uaa
     category: gradle
 
   - name: tap-monitor
+    category: pack_sh
+
+  - name: tap-nginx-dyn-stream
     category: pack_sh
 
   - name: tap-nginx-ingress
@@ -99,8 +103,17 @@ list_repo:
   - name: tap-template-repository
     category: pack_sh
 
-  - name: tap-uaa-client-register-job
+  - name: gateway
     category: pack_sh
+
+  - name: scoring-pipelines
+    category: dockerfile
+
+  - name: gearpump-dashboard
+    category: gearpump-dashboard
+
+  - name: scoring-engine
+    category: scoring-engine
 
   - name: uploader
     category: maven
@@ -153,6 +166,8 @@ component_build_categories:
   - auth-gateway
   - tap-blob-store
   - console
+  - gearpump-dashboard
+  - scoring-engine
 
 # List of categories for which a Docker image will be build
 image_build_categories:

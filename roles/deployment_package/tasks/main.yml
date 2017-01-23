@@ -29,6 +29,12 @@
 - name: copy tap-ansible to deployment-package workdir
   command: "cp -R {{ offline_workdir }}/python-ansible {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}"
 
+- name: replace tap_version value in tap-deploy with deployment_package_version
+  lineinfile:
+    dest: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/group_vars/all/version.yml"
+    regexp: '^tap_version\:'
+    line: 'tap_version: {{ deployment_package_version }}'
+
 - include: package_registry_remove.yml
 
 - name: get tap-images from mounted volume

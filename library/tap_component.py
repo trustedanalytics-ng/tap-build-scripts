@@ -239,6 +239,11 @@ def build_gearpump_dashboard(path, skip_tests=True):
     return call_build_command_chain(lambda: build_pack_sh(path),
                                     lambda: build_maven(path, skip_tests))
 
+def build_gearpump_broker(path, skip_tests=True):
+    return call_build_command_chain(lambda: build_maven(path, skip_tests, 'clean install'),
+                                    lambda: build_pack_sh(path),
+                                    lambda: build_maven(path, skip_tests))
+
 def build_scoring_engine(path, skip_tests=True):
     return call_build_command_chain(lambda: build_maven(path, skip_tests, 'clean install -P dev'),
                                     lambda: build_maven(path, skip_tests, 'package -P build-server -f docker/pom.xml'))
@@ -255,7 +260,8 @@ def main():
             path=dict(required=True, type='str'),
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
                                                   'go_exe', 'tap-metrics', 'tap-blob-store', 'console',
-                                                  'gearpump-dashboard', 'scoring-engine', 'space-shuttle-demo']),
+                                                  'gearpump-dashboard', 'gearpump-broker', 'scoring-engine',
+                                                  'space-shuttle-demo']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict'),
             copy_files=dict(required=False, default=None, type='list'),
@@ -297,6 +303,8 @@ def main():
         build_result = build_console(params['path'])
     elif params['category'] == 'gearpump-dashboard':
         build_result = build_gearpump_dashboard(params['path'], params['skip_tests'])
+    elif params['category'] == 'gearpump-broker':
+        build_result = build_gearpump_broker(params['path'], params['skip_tests'])
     elif params['category'] == 'scoring-engine':
         build_result = build_scoring_engine(params['path'], params['skip_tests'])
     elif params['category'] == 'space-shuttle-demo':

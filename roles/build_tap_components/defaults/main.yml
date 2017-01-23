@@ -128,7 +128,7 @@ list_repo:
     category: maven
 
   - name: gearpump-broker
-    category: maven
+    category: gearpump-broker
 
   - name: h2o-broker
     category: maven
@@ -169,6 +169,7 @@ component_build_categories:
   - auth-gateway
   - tap-blob-store
   - console
+  - gearpump-broker
   - gearpump-dashboard
   - scoring-engine
   - space-shuttle-demo

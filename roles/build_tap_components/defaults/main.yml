@@ -18,6 +18,9 @@ list_repo:
   - name: tap-deploy
     category: script
 
+  - name: space-shuttle-demo
+    category: space-shuttle-demo
+
   - name: auth-gateway
     category: auth-gateway
 
@@ -99,7 +102,7 @@ list_repo:
 
   - name: tap-nginx-ingress
     category: pack_sh
-  
+
   - name: tap-template-repository
     category: pack_sh
 
@@ -168,6 +171,7 @@ component_build_categories:
   - console
   - gearpump-dashboard
   - scoring-engine
+  - space-shuttle-demo
 
 # List of categories for which a Docker image will be build
 image_build_categories:
@@ -182,6 +186,11 @@ imageless_categories:
   - go_exe
   - script
   - rpm
+  - space-shuttle-demo
+
+# List of categories that produce output directory with application files
+sample_apps_categories:
+  - space-shuttle-demo
 
 organization: "intel-data"
 repos_checkout_dir: "{{ ansible_env.HOME }}/tap-repositories"
@@ -195,3 +204,4 @@ build_environment:
   M2_HOME: /opt/maven
 
 rpms_directory: "{{ ansible_env.HOME }}/tap-rpms"
+sample_apps_directory: "{{ ansible_env.HOME }}/sample_apps"

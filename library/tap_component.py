@@ -243,6 +243,10 @@ def build_scoring_engine(path, skip_tests=True):
     return call_build_command_chain(lambda: build_maven(path, skip_tests, 'clean install -P dev'),
                                     lambda: build_maven(path, skip_tests, 'package -P build-server -f docker/pom.xml'))
 
+def build_space_shuttle_demo(path):
+    return call_build_command_chain(lambda: build_pack_sh(path),
+                                    lambda: BuildRunner.call_build_command(['bash', 'copy_artifacts.sh'], path))
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
@@ -251,7 +255,7 @@ def main():
             path=dict(required=True, type='str'),
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
                                                   'go_exe', 'tap-metrics', 'tap-blob-store', 'console',
-                                                  'gearpump-dashboard', 'scoring-engine']),
+                                                  'gearpump-dashboard', 'scoring-engine', 'space-shuttle-demo']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict'),
             copy_files=dict(required=False, default=None, type='list'),
@@ -295,6 +299,8 @@ def main():
         build_result = build_gearpump_dashboard(params['path'], params['skip_tests'])
     elif params['category'] == 'scoring-engine':
         build_result = build_scoring_engine(params['path'], params['skip_tests'])
+    elif params['category'] == 'space-shuttle-demo':
+        build_result = build_space_shuttle_demo(params['path'])
 
     if not build_result['success']:
         module.fail_json(msg="Building {name} failed. Log: {output}".format(name=params['name'],

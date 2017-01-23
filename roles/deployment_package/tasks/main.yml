@@ -53,7 +53,10 @@
 - name: move tap rpms to tap-deploy/files location
   shell: "cp {{ rpms_directory }}/*.rpm {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files"
 
-#- name: move demo apps
+- name: move demo apps
+  command: "cp {{ sample_apps_directory }} {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/sample_apps -r"
+  args:
+    creates: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/files/sample_apps"
 
 - name: copy refs.txt file to tap package directory
   copy:

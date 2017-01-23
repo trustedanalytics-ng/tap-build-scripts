@@ -58,6 +58,18 @@
     push: "yes"
   with_items: "{{ list_repo | map(attribute='produces') | select('defined') | list }}"
 
+- name: Create dir for each sample app
+  file:
+    path: "{{ sample_apps_directory }}/{{ item.name }}"
+    state: directory
+  with_items: "{{ list_repo }}"
+  when: "{{ item.category in sample_apps_categories }}"
+
+- name: Move sample apps
+  shell: "cp {{ ansible_env.HOME }}/tap-repositories/{{ item.name }}/artifacts/* {{ sample_apps_directory }}/{{ item.name }}/ -r"
+  with_items: "{{ list_repo }}"
+  when: "{{ item.category in sample_apps_categories }}"
+
 - name: create rpms directory
   file:
     path: "{{ rpms_directory }}"

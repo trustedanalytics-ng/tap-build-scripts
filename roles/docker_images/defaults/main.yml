@@ -48,4 +48,3 @@ public_images:
   - { name: "frodenas/mongodb", tag: "3.0" }
   - { name: "joaodubas/orientdb" }
   - { name: "logstash", tag: "2.4" }
-  - { name: "cfcommunity/logstash" }

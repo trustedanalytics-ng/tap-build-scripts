@@ -37,6 +37,19 @@
     registry_port: "{{ registry_distribution_port | default(5001) }}"
     push_images: "yes"
 
+# Tag offering images
+- include: tap-offering-images/tag.yml
+  vars:
+    become_root: "yes"
+
+# Push offering images to local registry
+- include: tap-offering-images/tag.yml
+  vars:
+    become_root: "yes"
+    registry_host: "localhost"
+    registry_port: "{{ registry_distribution_port | default(5001) }}"
+    push_images: "yes"
+
 - include: public-images.yml
   vars:
     become_root: "yes"

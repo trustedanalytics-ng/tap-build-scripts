@@ -1,3 +1,6 @@
 [submodule "tap-base-images"]
 	path = tap-base-images
 	url = ../tap-base-images
+[submodule "tap-offering-images"]
+	path = tap-offering-images
+	url = ../tap-offering-images

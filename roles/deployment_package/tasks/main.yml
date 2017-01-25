@@ -70,6 +70,9 @@
     dest: "{{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/image_refs.txt"
     remote_src: yes
 
+- name: copy tap-cli binary to tap package directory
+  shell: "cp {{ repos_dir }}/tap-cli/application/* {{ deployment_package_workdir }}/TAP-{{ deployment_package_version }}/"
+
 - name: create TAP deployment package
   command: "tar -chzvf {{ ansible_env.HOME }}/TAP-{{ deployment_package_version }}.tar.gz TAP-{{ deployment_package_version }}/"
   args:

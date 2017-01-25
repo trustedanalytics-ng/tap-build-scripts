@@ -28,3 +28,5 @@ base_images:
   - { name: "registry", tag: "2" }
 rpms_directory: "{{ ansible_env.HOME }}/tap-rpms"
 sample_apps_directory: "{{ ansible_env.HOME }}/sample_apps"
+repos_dir: "{{ ansible_env.HOME }}/tap-repositories"
+

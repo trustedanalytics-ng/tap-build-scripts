@@ -41,6 +41,7 @@
     version: "{{ item.version }}"
     executable: pip2.7
   with_items:
+    - { name: "setuptools", version: "34.0.2" }
     - { name: "locustio", version: "0.7.5" }
     - { name: "pyzmq", version: "16.0.0" }
     - { name: "requests", version: "2.11.1" }

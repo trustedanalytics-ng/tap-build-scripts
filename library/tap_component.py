@@ -42,6 +42,7 @@ COMMIT_FILE_NAME = '.tap_component_build.txt'
 DATA_CATALOG_BUILD_TAG = 'tapimages:8080/data-catalog-build'
 GRADLE_TOMCAT_URL = 'http://repo2.maven.org/maven2/org/apache/tomcat/tomcat/7.0.70/tomcat-7.0.70.tar.gz'
 GRADLE_TOMCAT_PACKAGE_NAME = 'apache-tomcat-7.0.70.tar.gz'
+KUBECTL_URL = 'https://storage.googleapis.com/kubernetes-release/release/v1.3.10/bin/linux/amd64/kubectl'
 
 
 # Status returned, when component is already build.
@@ -126,6 +127,33 @@ def call_build_command_chain(*build_commands):
 
     return build_result
 
+def copy_files(files):
+    for file in files:
+        src = file['src']
+        dest = file['dest']
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+
+        if os.path.isfile(src):
+            cmd = ['cp', src, dest]
+        elif os.path.isdir(src):
+            cmd = ['cp', '-r', src, dest]
+        elif glob.glob(src):
+            cmd = ['cp']
+            cmd.extend(glob.glob(src))
+            cmd.append(dest)
+        else:
+            return {'success': False,
+                    'output': 'Source file/directory {0} does not exist.'.format(src)}
+
+        try:
+            subprocess.call(cmd)
+        except subprocess.CalledProcessError as e:
+            return {'success': False,
+                    'output': 'Failed to copy file {0}.'.format(str(e))}
+
+    return {'success': True, 'output': 'Files copied.'}
+
 def get_proxy_host(http_proxy):
     return http_proxy.split(':')[1].replace('//', '')
 
@@ -208,33 +236,6 @@ def build_tap_blob_store(path, proxy_settings=None):
                                     lambda: BuildRunner.call_build_command(build_blob_store_cmd, path),
                                     lambda: BuildRunner.call_build_command(build_minio_cmd, path))
 
-def copy_files(files):
-    for file in files:
-        src = file['src']
-        dest = file['dest']
-        if not os.path.isdir(dest):
-            os.makedirs(dest)
-
-        if os.path.isfile(src):
-            cmd = ['cp', src, dest]
-        elif os.path.isdir(src):
-            cmd = ['cp', '-r', src, dest]
-        elif glob.glob(src):
-            cmd = ['cp']
-            cmd.extend(glob.glob(src))
-            cmd.append(dest)
-        else:
-            return {'success': False,
-                    'output': 'Source file/directory {0} does not exist.'.format(src)}
-
-        try:
-            subprocess.call(cmd)
-        except subprocess.CalledProcessError as e:
-            return {'success': False,
-                    'output': 'Failed to copy file {0}.'.format(str(e))}
-
-    return {'success': True, 'output': 'Files copied.'}
-
 def build_gearpump_dashboard(path, skip_tests=True):
     return call_build_command_chain(lambda: build_pack_sh(path),
                                     lambda: build_maven(path, skip_tests))
@@ -252,6 +253,11 @@ def build_space_shuttle_demo(path):
     return call_build_command_chain(lambda: build_pack_sh(path),
                                     lambda: BuildRunner.call_build_command(['bash', 'copy_artifacts.sh'], path))
 
+def build_tap_ceph_monitor(path):
+    return call_build_command_chain(lambda: build_pack_sh(path),
+                                    lambda: BuildRunner.call_build_command(['wget', KUBECTL_URL], path),
+                                    lambda: BuildRunner.call_build_command(['chmod', '+x', 'kubectl'], path))
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
@@ -261,7 +267,7 @@ def main():
             category=dict(required=True, choices=['maven', 'pack_sh', 'rpm', 'gradle', 'data-catalog', 'auth-gateway',
                                                   'go_exe', 'tap-metrics', 'tap-blob-store', 'console',
                                                   'gearpump-dashboard', 'gearpump-broker', 'scoring-engine',
-                                                  'space-shuttle-demo']),
+                                                  'space-shuttle-demo', 'tap-ceph-monitor']),
             skip_tests=dict(required=False, default=True, type='bool'),
             proxy_settings=dict(required=False, default=None, type='dict'),
             copy_files=dict(required=False, default=None, type='list'),
@@ -309,6 +315,8 @@ def main():
         build_result = build_scoring_engine(params['path'], params['skip_tests'])
     elif params['category'] == 'space-shuttle-demo':
         build_result = build_space_shuttle_demo(params['path'])
+    elif params['category'] == 'tap-ceph-monitor':
+        build_result = build_tap_ceph_monitor(params['path'])
 
     if not build_result['success']:
         module.fail_json(msg="Building {name} failed. Log: {output}".format(name=params['name'],

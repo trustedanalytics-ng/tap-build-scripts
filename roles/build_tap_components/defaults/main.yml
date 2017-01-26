@@ -157,6 +157,9 @@ list_repo:
   - name: tap-ceph-broker
     category: rpm
 
+  - name: tap-ceph-monitor
+    category: tap-ceph-monitor
+
 # List of categories that will be build using tap-component module
 component_build_categories:
   - maven
@@ -173,6 +176,7 @@ component_build_categories:
   - gearpump-dashboard
   - scoring-engine
   - space-shuttle-demo
+  - tap-ceph-monitor
 
 # List of categories for which a Docker image will be build
 image_build_categories:
@@ -181,6 +185,7 @@ image_build_categories:
   - data-catalog
   - dockerfile
   - console
+  - tap-ceph-monitor
 
 # List of categories that do not produce a Docker image
 imageless_categories:

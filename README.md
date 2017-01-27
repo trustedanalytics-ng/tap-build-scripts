@@ -7,7 +7,7 @@ In order to run TBS, Centos developer machine with some software dependencies is
 * Prepare developer machine which meet following requirements:
  * operating system: CentOS 7 (linux);
  * 100 GB disk free space;
- * at least 1 GB RAM;
+ * at least 4 GB RAM;
  * access to the Internet network.
 * Log into prepared developer machine.
 * Install neccessary dependencies:

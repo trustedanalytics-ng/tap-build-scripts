@@ -16,7 +16,7 @@
 
 ---
 
-ansible_url: https://releases.ansible.com/ansible/ansible-2.2.1.0-0.2.rc2.tar.gz
+ansible_url: ansible==2.2.1.0
 
 ansible_yum_dependencies:
   - libffi-devel
@@ -32,3 +32,6 @@ pip_dependencies:
   - netaddr==0.7.18
   - paramiko==2.1.1
   - PyYAML==3.11
+  - boto==2.45.0
+  - awscli==1.11.44
+  - six==1.10.0

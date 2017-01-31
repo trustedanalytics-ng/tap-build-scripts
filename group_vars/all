@@ -25,6 +25,8 @@ TARGET_REGULAR_USER: centos
 # - master
 # - v0.7
 
+#organization: "intel-data"
+
 offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
 
 # registry_distribution_port: 5001

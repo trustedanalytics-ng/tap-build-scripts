@@ -21,10 +21,14 @@ In order to run TBS follow the commands:
 * Log into developer machine.
 * Clone this repository.
 * Fetch repository submodules: `git submodule init && git submodule update`.
-* Modify group vars, defaults and inventory if it is neccessary. Default values can be used.
+* Modify group vars, and inventory if it is neccessary. Default values can be used.
 * Run TBS script: `./RUN.sh`.
 
 Warning: Running TBS script you agree with Oracle Java license.
+
+## Deploying TAP
+Once you built TAP deployment package you can untar it and run deployment scripts. For instructions please follow below link:
+https://github.com/trustedanalytics/platform-wiki-0.8/blob/master/Platform-Deployment/platform_deployment_manual.md
 
 ## Handling proxy
 In order to run grand-platform-factory behind proxy, execute following command:

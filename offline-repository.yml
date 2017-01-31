@@ -18,8 +18,6 @@
 
 - name: Create offline repository package
   hosts: all
-  vars_files:
-    - defaults/all
   become: yes
   roles:
     - offline_commons

@@ -16,15 +16,25 @@
 
 ---
 
-- include: ipv6_fix.yml
-  tags:
-    - skip_on_vagrant
-- include: firewalld.yml
-  tags:
-    - skip_on_vagrant
-- include: selinux.yml
-  tags:
-    - skip_on_vagrant
-- include: yum_repositories.yml
-- include: git-lfs.yml
-- include: environment.yml 
+- name: Download git-lfs script
+  get_url:
+    url: "{{ git_lfs_script_url }}"
+    dest: /tmp/git-lfs.rpm.sh
+    mode: u=rx
+  become: yes
+
+- name: Run git-lfs script
+  command: sh git-lfs.rpm.sh
+  args:
+    chdir: /tmp
+  become: yes
+ 
+- name: Install git-lfs
+  yum:
+    name: git-lfs
+    state: latest
+  become: yes
+ 
+- name: Initialize git-lfs
+  command: git lfs install
+  become_user: "{{ TARGET_REGULAR_USER }}" 

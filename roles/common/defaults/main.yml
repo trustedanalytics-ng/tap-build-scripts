@@ -14,17 +14,29 @@
 # limitations under the License.
 #
 
----
+---                                                                                                               
 
-- include: ipv6_fix.yml
-  tags:
-    - skip_on_vagrant
-- include: firewalld.yml
-  tags:
-    - skip_on_vagrant
-- include: selinux.yml
-  tags:
-    - skip_on_vagrant
-- include: yum_repositories.yml
-- include: git-lfs.yml
-- include: environment.yml 
+git_lfs_script_url: https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh
+
+yum_dependencies:
+  - make
+  - git
+  - curl
+  - wget
+  - binutils
+  - gcc
+  - gcc-c++
+  - htop
+  - ncdu
+  - unzip
+  - zip
+  - jq
+  - createrepo
+  - yum-utils
+  - fontconfig
+  - sshpass
+  - bzip2
+  - rpm-build
+  - libffi
+  - libffi-devel
+  - openssl-devel

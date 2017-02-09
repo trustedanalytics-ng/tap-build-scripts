@@ -31,6 +31,7 @@
     path: "{{ ansible_env.HOME }}/.rpmmacros"
     owner: "{{ TARGET_REGULAR_USER }}"
     state: touch
+  changed_when: False
 
 - name: Add config into .rpmmacros file
   lineinfile:

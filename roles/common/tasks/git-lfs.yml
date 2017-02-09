@@ -16,25 +16,31 @@
 
 ---
 
-- name: Download git-lfs script
-  get_url:
-    url: "{{ git_lfs_script_url }}"
-    dest: /tmp/git-lfs.rpm.sh
-    mode: u=rx
-  become: yes
+- block:
+  - name: Check if git-lfs is installed
+    command: git lfs install
+    changed_when: False
 
-- name: Run git-lfs script
-  command: sh git-lfs.rpm.sh
-  args:
-    chdir: /tmp
-  become: yes
+  rescue:
+    - name: Download git-lfs script
+      get_url:
+        url: "{{ git_lfs_script_url }}"
+        dest: /tmp/git-lfs.rpm.sh
+        mode: u=rx
+      become: yes
+
+    - name: Run git-lfs script
+      command: sh git-lfs.rpm.sh
+      args:
+        chdir: /tmp
+      become: yes
  
-- name: Install git-lfs
-  yum:
-    name: git-lfs
-    state: latest
-  become: yes
+    - name: Install git-lfs
+      yum:
+        name: git-lfs
+        state: latest
+      become: yes
  
-- name: Initialize git-lfs
-  command: git lfs install
-  become_user: "{{ TARGET_REGULAR_USER }}" 
+    - name: Run git lfs install
+      command: git lfs install
+      become_user: "{{ TARGET_REGULAR_USER }}" 

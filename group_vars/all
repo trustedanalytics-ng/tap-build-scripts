@@ -31,6 +31,6 @@ offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
 
 # registry_distribution_port: 5001
 
-# deployment_package_version: 0.8.0.99999
+# deployment_package_version: 0.8.0
 
 # repos_checkout_dir: {{ ansible_env.HOME }}/tap-repositories

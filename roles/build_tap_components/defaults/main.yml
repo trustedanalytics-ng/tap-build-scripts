@@ -198,6 +198,8 @@ imageless_categories:
 sample_apps_categories:
   - space-shuttle-demo
 
+deployment_package_version: 0.8.0
+
 organization: "intel-data"
 repos_checkout_dir: "{{ ansible_env.HOME }}/tap-repositories"
 

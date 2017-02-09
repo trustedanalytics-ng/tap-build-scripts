@@ -33,7 +33,6 @@
   docker_image:
     name: "{{ item.name }}"
     path: "{{ repos_checkout_dir }}/{{ item.name }}"
-    tag: "{{ item.tag | default(deployment_package_version)}}"
     pull: "no"
     buildargs:
       http_proxy: "{{ ansible_env.http_proxy | default('') }}"
@@ -45,8 +44,7 @@
 - name: Push TAP components images to registry
   docker_image:
     name: "{{ item.name }}"
-    tag: "{{ item.tag | default(deployment_package_version)}}"
-    repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
+    repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}:{{ item.tag | default(deployment_package_version)}}"
     push: "yes"
   with_items: "{{ list_repo }}"
   when: "{{ item.category not in imageless_categories and item.produces is undefined }}"
@@ -54,8 +52,7 @@
 - name: Push TAP components images to registry (components with multiple images)
   docker_image:
     name: "{{ item.name }}"
-    tag: "{{ item.tag | default(deployment_package_version)}}"
-    repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
+    repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}:{{ item.tag | default(deployment_package_version)}}"
     push: "yes"
   with_items: "{{ list_repo | map(attribute='produces') | select('defined') | list }}"
 

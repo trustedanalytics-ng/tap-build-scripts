@@ -40,18 +40,11 @@
     path: "{{ repos_checkout_dir }}"
     state: directory
 
-- include: repos.yml
-  with_items: "{{ list_repo | map(attribute='name') | difference(tap_commits | default([]) |  map(attribute='repo') | list) }}"
-  loop_control:
-    loop_var: repo
-
-- name: clone repo and checkout to commit defined in tap_commits
+- name: clone component repositories
   git:
-    repo: "{{ github_url }}/{{ organization }}/{{ item.repo }}.git"
-    dest: "{{ repos_checkout_dir }}/{{ item.repo }}"
-    version: "{{ item.commit }}"
+    repo: "{{ github_url }}/{{ item.organization | default(organization) }}/{{ item.name }}.git"
+    dest: "{{ repos_checkout_dir }}/{{ item.name }}"
+    version: "{{ item.version | default(default_branch)}}"
     force: "yes"
-  with_items: "{{ tap_commits | default([]) }}"
-  when: 
-    - tap_commits is defined
-    - tap_commits|length > 0
+  with_items: "{{ list_repo }}"
+

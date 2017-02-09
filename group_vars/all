@@ -17,14 +17,6 @@
 ---
 TARGET_REGULAR_USER: centos
 
-#Example usage of manage_repos_git role with defined commits and/or branches/tags
-#tap_commits:
-# - { repo: 'console', commit: '9294201' }
-# - { repo: 'h2o-broker', commit: '362754e' }
-#tap_branches:
-# - master
-# - v0.7
-
 #organization: "intel-data"
 
 offline_workdir: "{{ ansible_env.HOME }}/offline_repo"

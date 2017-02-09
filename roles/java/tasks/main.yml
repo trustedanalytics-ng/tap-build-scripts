@@ -41,6 +41,7 @@
 
 - name: Set default java version
   shell:  /usr/sbin/update-alternatives --set java $JAVA_HOME/jre/bin/java
+  changed_when: False
 
 - name: Download and extract maven
   unarchive:

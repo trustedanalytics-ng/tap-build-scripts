@@ -33,6 +33,7 @@
   docker_image:
     name: "{{ item.name }}"
     path: "{{ repos_checkout_dir }}/{{ item.name }}"
+    tag: "{{ item.tag | default(deployment_package_version)}}"
     pull: "no"
     buildargs:
       http_proxy: "{{ ansible_env.http_proxy | default('') }}"

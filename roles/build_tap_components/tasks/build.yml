@@ -44,7 +44,7 @@
 - name: Push TAP components images to registry
   docker_image:
     name: "{{ item.name }}"
-    tag: "{{ item.tag | default('latest')}}"
+    tag: "{{ item.tag | default(deployment_package_version)}}"
     repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
     push: "yes"
   with_items: "{{ list_repo }}"
@@ -53,7 +53,7 @@
 - name: Push TAP components images to registry (components with multiple images)
   docker_image:
     name: "{{ item.name }}"
-    tag: "{{ item.tag | default('latest')}}"
+    tag: "{{ item.tag | default(deployment_package_version)}}"
     repository: "{{ registry_host }}:{{ registry_distribution_port }}/{{ item.name }}"
     push: "yes"
   with_items: "{{ list_repo | map(attribute='produces') | select('defined') | list }}"

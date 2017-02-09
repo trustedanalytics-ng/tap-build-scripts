@@ -27,4 +27,3 @@
     - skip_on_vagrant
 - include: yum_repositories.yml
 - include: git-lfs.yml
-- include: environment.yml 

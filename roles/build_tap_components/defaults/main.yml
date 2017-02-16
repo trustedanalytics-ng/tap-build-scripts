@@ -108,9 +108,11 @@ list_repo:
 
   - name: gateway
     category: pack_sh
+    tag: 0.8.4
 
   - name: scoring-pipelines
     category: dockerfile
+    tag: 0.8.0
 
   - name: gearpump-dashboard
     category: gearpump-dashboard

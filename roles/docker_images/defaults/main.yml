@@ -33,7 +33,7 @@ public_images:
   - { name: "redis", tag: "3.0" }
   - { name: "wurstmeister/zookeeper", tag: "3.4.6" }
   - { name: "wurstmeister/kafka", tag: "0.10.0.0" }
-  - { name: "frodenas/couchdb", tag: "1.6" }
+  - { name: "frodenas/couchdb" }
   - { name: "prom/prometheus", tag: "v1.1.2" }
   - { name: "trustedanalytics/mosquitto" }
   - { name: "mongo", tag: "3.3.12" }

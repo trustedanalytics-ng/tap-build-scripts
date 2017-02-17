@@ -28,7 +28,7 @@ Warning: Running TBS script you agree with Oracle Java license.
 
 ## Deploying TAP
 Once you built TAP deployment package you can untar it and run deployment scripts. For instructions please follow below link:
-https://github.com/trustedanalytics/platform-wiki-0.8/blob/master/Platform-Deployment/platform_deployment_manual.md
+https://github.com/trustedanalytics-ng/platform-wiki/blob/master/Platform-Deployment/platform_deployment_manual.md
 
 ## Handling proxy
 In order to run grand-platform-factory behind proxy, execute following command:

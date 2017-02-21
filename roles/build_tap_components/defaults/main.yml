@@ -202,7 +202,7 @@ sample_apps_categories:
 
 deployment_package_version: 0.8.0.99999
 
-organization: "intel-data"
+organization: "trustedanalytics-ng"
 default_branch: "master"
 repos_checkout_dir: "{{ ansible_env.HOME }}/tap-repositories"
 

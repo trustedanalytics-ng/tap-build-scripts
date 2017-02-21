@@ -23,7 +23,7 @@ list_repo:
     category: pack_sh
     final_file_pattern: "zookeeper_nss*.tar.gz"
 
-organization: "intel-data"
+organization: "trustedanalytics-ng"
 default_branch: "master"
 repos_checkout_dir: "{{ ansible_env.HOME }}/tap-repositories"
 

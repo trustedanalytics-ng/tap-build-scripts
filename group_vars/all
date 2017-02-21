@@ -17,7 +17,7 @@
 ---
 TARGET_REGULAR_USER: centos
 
-#organization: "intel-data"
+#organization: "trustedanalytics-ng"
 
 offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
 

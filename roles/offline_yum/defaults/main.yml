@@ -159,6 +159,9 @@ yum_dependencies:
   - mailx
   - nethogs
   - nmap-ncat
+  - openssh
+  - openssh-clients
+  - openssh-server
   - patch
   - php-fpm
   - postgresql-server

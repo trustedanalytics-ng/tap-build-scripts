@@ -86,3 +86,16 @@
   command: "tar -chzvf {{ ansible_env.HOME }}/TAP-{{ deployment_package_version }}.tar.gz TAP-{{ deployment_package_version }}/"
   args:
     chdir: "{{ deployment_package_workdir }}"
+
+- name: remove temporary directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  become: yes
+  with_items:
+    - "{{ deployment_package_workdir }}"
+    - "{{ ansible_env.HOME }}/offline_repo"
+    - "{{ sample_apps_directory }}"
+    - "{{ repos_dir }}"
+    - "{{ rpms_directory }}"
+  when: dont_cleanup is not defined

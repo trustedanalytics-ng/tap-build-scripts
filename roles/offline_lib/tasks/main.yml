@@ -16,15 +16,5 @@
 
 ---
 
-- name: Create offline repository package
-  hosts: all
-  become: yes
-  roles:
-    - offline_commons
-    - offline_parcels
-    - offline_pip
-    - offline_yum
-    - offline_files
-    - offline_lib
-    - offline_archive 
-    - offline_ansible
+- include: download.yml
+- include: build.yml

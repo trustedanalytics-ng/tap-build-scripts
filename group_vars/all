@@ -18,6 +18,7 @@
 TARGET_REGULAR_USER: centos
 
 #organization: "trustedanalytics-ng"
+default_branch: "NG"
 
 offline_workdir: "{{ ansible_env.HOME }}/offline_repo"
 
